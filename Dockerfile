@@ -1,4 +1,4 @@
-FROM golang:1.20-rc-alpine AS builder
+FROM golang:1.19.5-alpine3.17 AS builder
 WORKDIR /app
 COPY . .
 RUN go build -o secret-keeper main.go
