@@ -28,5 +28,5 @@ func ErrInternal() error {
 }
 
 func LogErr(err error) {
-	log.Err(err).Stack()
+	log.Err(err).Stack().Msg("")
 }
