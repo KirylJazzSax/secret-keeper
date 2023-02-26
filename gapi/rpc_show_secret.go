@@ -7,6 +7,8 @@ import (
 	"secret_keeper/errors"
 	"secret_keeper/password"
 	"secret_keeper/pb"
+
+	"github.com/samber/do"
 )
 
 func (s *Server) ShowSecret(ctx context.Context, req *pb.ShowSecretRequest) (*pb.ShowSecretResponse, error) {
@@ -31,9 +33,17 @@ func (s *Server) ShowSecret(ctx context.Context, req *pb.ShowSecretRequest) (*pb
 		return nil, errors.LogErrAndCreateInternal(err)
 	}
 
-	if secret.Body, err = encryptor.Decrypt(secret.Body, s.config.SECRET_KEY, s.config.IV); err != nil {
+	encr, err := do.Invoke[encryptor.Encryptor](nil)
+	if err != nil {
 		return nil, errors.LogErrAndCreateInternal(err)
 	}
+
+	var decripted string
+	if err = encr.Decrypt(secret.Body, &decripted); err != nil {
+		return nil, errors.LogErrAndCreateInternal(err)
+	}
+
+	secret.Body = decripted
 
 	return &pb.ShowSecretResponse{
 		Secret: secret,

@@ -6,20 +6,22 @@ import (
 	"secret_keeper/db"
 	"secret_keeper/errors"
 	"secret_keeper/gapi"
+	"secret_keeper/internal/di"
 	"secret_keeper/pb"
 	"secret_keeper/utils"
 
 	"github.com/boltdb/bolt"
 	"github.com/rs/zerolog/log"
+	"github.com/samber/do"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
 
 func main() {
-	config, err := utils.LoadConfig(".")
-	if err != nil {
+	if err := di.ProvideDeps("."); err != nil {
 		panic(err)
 	}
+	config := do.MustInvoke[*utils.Config](nil)
 
 	grpcServer := grpc.NewServer()
 

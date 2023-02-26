@@ -12,10 +12,10 @@ type Server struct {
 	pb.UnimplementedSecretKeeperServer
 	store        db.Store
 	tokenManager token.Maker
-	config       utils.Config
+	config       *utils.Config
 }
 
-func NewServer(store db.Store, config utils.Config) (*Server, error) {
+func NewServer(store db.Store, config *utils.Config) (*Server, error) {
 	manager, err := token.NewPasetoMaker(config.SymmetricKey)
 	if err != nil {
 		return nil, fmt.Errorf("could not create tokenmanager")
