@@ -9,6 +9,7 @@ import (
 
 	"secret_keeper/errors"
 
+	"github.com/samber/do"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -25,10 +26,14 @@ func (server *Server) CreateUser(ctx context.Context, request *pb.CreateUserRequ
 		return nil, errors.InvalidArgumentError(violations)
 	}
 
-	hash, err := password.Hash(request.Password)
+	hasher, err := do.Invoke[password.PassowrdHasher](nil)
 	if err != nil {
-		errors.LogErr(err)
-		return nil, errors.ErrInternal()
+		return nil, errors.LogErrAndCreateInternal(err)
+	}
+
+	var hash string
+	if err = hasher.Hash(request.Password, &hash); err != nil {
+		return nil, errors.LogErrAndCreateInternal(err)
 	}
 
 	dbUser := &db.User{User: user, Password: hash}

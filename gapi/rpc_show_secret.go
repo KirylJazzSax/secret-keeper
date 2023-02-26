@@ -18,7 +18,12 @@ func (s *Server) ShowSecret(ctx context.Context, req *pb.ShowSecretRequest) (*pb
 		return nil, errors.UnAuthErr()
 	}
 
-	if err = password.Check(req.Password, user.Password); err != nil {
+	hasher, err := do.Invoke[password.PassowrdHasher](nil)
+	if err != nil {
+		return nil, errors.LogErrAndCreateInternal(err)
+	}
+
+	if err = hasher.Check(req.Password, user.Password); err != nil {
 		return nil, errors.LogErrAndCreateInternal(err)
 	}
 

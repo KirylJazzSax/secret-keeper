@@ -2,6 +2,7 @@ package di
 
 import (
 	"secret_keeper/encryptor"
+	"secret_keeper/password"
 	"secret_keeper/utils"
 
 	"github.com/samber/do"
@@ -30,8 +31,13 @@ func provideEncryptor(i *do.Injector) (encryptor.Encryptor, error) {
 	return encryptor.NewSimpleEncryptor(config.SECRET_KEY, config.IV), nil
 }
 
+func provideHasher(i *do.Injector) (password.PassowrdHasher, error) {
+	return password.NewSimplePasswordHasher(), nil
+}
+
 func ProvideDeps(configPath string) error {
 	do.Provide(nil, provideConfig(configPath))
 	do.Provide(nil, provideEncryptor)
+	do.Provide(nil, provideHasher)
 	return nil
 }

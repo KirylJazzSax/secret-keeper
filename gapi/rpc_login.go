@@ -6,6 +6,8 @@ import (
 	"secret_keeper/errors"
 	"secret_keeper/password"
 	"secret_keeper/pb"
+
+	"github.com/samber/do"
 )
 
 func (server *Server) LoginUser(ctx context.Context, request *pb.LoginRequest) (*pb.LoginResponse, error) {
@@ -17,18 +19,21 @@ func (server *Server) LoginUser(ctx context.Context, request *pb.LoginRequest) (
 	}
 
 	if err != nil {
-		errors.LogErr(err)
-		return nil, errors.ErrInternal()
+		return nil, errors.LogErrAndCreateInternal(err)
 	}
 
-	if err = password.Check(request.Password, user.Password); err != nil {
+	hasher, err := do.Invoke[password.PassowrdHasher](nil)
+	if err != nil {
+		return nil, errors.LogErrAndCreateInternal(err)
+	}
+
+	if err = hasher.Check(request.Password, user.Password); err != nil {
 		return nil, errors.LogErrAndCreateInternal(err)
 	}
 
 	token, payload, err := server.tokenManager.CreateToken(request.Email, server.config.AccessTokenDuration)
 	if err != nil {
-		errors.LogErr(err)
-		return nil, errors.ErrInternal()
+		return nil, errors.LogErrAndCreateInternal(err)
 	}
 
 	return &pb.LoginResponse{
