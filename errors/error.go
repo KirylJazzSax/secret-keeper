@@ -27,6 +27,15 @@ func ErrInternal() error {
 	return status.Error(codes.Internal, "internal error")
 }
 
+func LogErrAndCreateInternal(err error) error {
+	LogErr(err)
+	return status.Error(codes.Internal, "internal error")
+}
+
 func LogErr(err error) {
 	log.Err(err).Stack().Msg("")
+}
+
+func UnAuthErr() error {
+	return status.Error(codes.Unauthenticated, "auth error")
 }

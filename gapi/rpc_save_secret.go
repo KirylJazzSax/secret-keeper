@@ -11,7 +11,7 @@ func (s *Server) SaveSecret(ctx context.Context, req *pb.SaveSecretRequest) (*pb
 	authPayload, err := s.getAuthPayload(ctx)
 	if err != nil {
 		errors.LogErr(err)
-		return nil, UnAuthErr()
+		return nil, errors.UnAuthErr()
 	}
 
 	str, err := encryptor.Encrypt(req.Body, s.config.SECRET_KEY, s.config.IV)
@@ -25,11 +25,8 @@ func (s *Server) SaveSecret(ctx context.Context, req *pb.SaveSecretRequest) (*pb
 		Body:  str,
 	}
 
-	err = s.store.CreateSecret(secret, authPayload.Email)
-
-	if err != nil {
-		errors.LogErr(err)
-		return nil, errors.ErrInternal()
+	if err = s.store.CreateSecret(secret, authPayload.Email); err != nil {
+		return nil, errors.LogErrAndCreateInternal(err)
 	}
 
 	return &pb.SaveSecretResponse{

@@ -21,9 +21,7 @@ func (server *Server) CreateUser(ctx context.Context, request *pb.CreateUserRequ
 		CreatedAt: timestamppb.Now(),
 	}
 
-	violations := validateRequest(user)
-
-	if len(violations) > 0 {
+	if violations := validateRequest(user); len(violations) > 0 {
 		return nil, errors.InvalidArgumentError(violations)
 	}
 
@@ -34,12 +32,10 @@ func (server *Server) CreateUser(ctx context.Context, request *pb.CreateUserRequ
 	}
 
 	dbUser := &db.User{User: user, Password: hash}
-	err = server.store.CreateUser(dbUser)
-	if err == db.ErrExists {
-		return nil, status.Errorf(codes.AlreadyExists, err.Error())
-	}
-
-	if err != nil {
+	if err = server.store.CreateUser(dbUser); err != nil {
+		if err == db.ErrExists {
+			return nil, status.Errorf(codes.AlreadyExists, err.Error())
+		}
 		errors.LogErr(err)
 		return nil, errors.ErrInternal()
 	}

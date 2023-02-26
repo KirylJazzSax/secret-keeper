@@ -13,13 +13,11 @@ func (s *Server) ShowSecret(ctx context.Context, req *pb.ShowSecretRequest) (*pb
 	user, err := s.store.GetUser(req.Email)
 	if err != nil {
 		errors.LogErr(err)
-		return nil, UnAuthErr()
+		return nil, errors.UnAuthErr()
 	}
 
-	err = password.Check(req.Password, user.Password)
-
-	if err != nil {
-		return nil, errors.ErrInternal()
+	if err = password.Check(req.Password, user.Password); err != nil {
+		return nil, errors.LogErrAndCreateInternal(err)
 	}
 
 	secret, err := s.store.GetSecret(uint64(req.Id), user.Email)
@@ -30,14 +28,11 @@ func (s *Server) ShowSecret(ctx context.Context, req *pb.ShowSecretRequest) (*pb
 	}
 
 	if err != nil {
-		errors.LogErr(err)
-		return nil, errors.ErrInternal()
+		return nil, errors.LogErrAndCreateInternal(err)
 	}
 
-	secret.Body, err = encryptor.Decrypt(secret.Body, s.config.SECRET_KEY, s.config.IV)
-	if err != nil {
-		errors.LogErr(err)
-		return nil, errors.ErrInternal()
+	if secret.Body, err = encryptor.Decrypt(secret.Body, s.config.SECRET_KEY, s.config.IV); err != nil {
+		return nil, errors.LogErrAndCreateInternal(err)
 	}
 
 	return &pb.ShowSecretResponse{

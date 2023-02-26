@@ -21,11 +21,8 @@ func (server *Server) LoginUser(ctx context.Context, request *pb.LoginRequest) (
 		return nil, errors.ErrInternal()
 	}
 
-	err = password.Check(request.Password, user.Password)
-
-	if err != nil {
-		errors.LogErr(err)
-		return nil, errors.ErrInternal()
+	if err = password.Check(request.Password, user.Password); err != nil {
+		return nil, errors.LogErrAndCreateInternal(err)
 	}
 
 	token, payload, err := server.tokenManager.CreateToken(request.Email, server.config.AccessTokenDuration)
