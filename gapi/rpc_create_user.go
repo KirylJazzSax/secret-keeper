@@ -22,7 +22,12 @@ func (server *Server) CreateUser(ctx context.Context, request *pb.CreateUserRequ
 		CreatedAt: timestamppb.Now(),
 	}
 
-	if violations := validateRequest(user); len(violations) > 0 {
+	v, err := do.Invoke[validation.Validator](nil)
+	if err != nil {
+		return nil, errors.LogErrAndCreateInternal(err)
+	}
+
+	if violations := validateRequest(user, v); len(violations) > 0 {
 		return nil, errors.InvalidArgumentError(violations)
 	}
 
@@ -48,8 +53,8 @@ func (server *Server) CreateUser(ctx context.Context, request *pb.CreateUserRequ
 	return &pb.CreateUserResponse{User: user}, nil
 }
 
-func validateRequest(user *pb.User) (violations []*errdetails.BadRequest_FieldViolation) {
-	if err := validation.ValidateEmail(user.Email); err != nil {
+func validateRequest(user *pb.User, v validation.Validator) (violations []*errdetails.BadRequest_FieldViolation) {
+	if err := v.ValidateEmail(user.Email); err != nil {
 		violations = append(violations, &errdetails.BadRequest_FieldViolation{Field: "email", Description: err.Error()})
 	}
 	return violations

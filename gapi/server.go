@@ -6,6 +6,8 @@ import (
 	"secret_keeper/pb"
 	"secret_keeper/token"
 	"secret_keeper/utils"
+
+	"github.com/samber/do"
 )
 
 type Server struct {
@@ -16,7 +18,7 @@ type Server struct {
 }
 
 func NewServer(store db.Store, config *utils.Config) (*Server, error) {
-	manager, err := token.NewPasetoMaker(config.SymmetricKey)
+	manager, err := do.Invoke[token.Maker](nil)
 	if err != nil {
 		return nil, fmt.Errorf("could not create tokenmanager")
 	}

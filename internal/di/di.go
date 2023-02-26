@@ -3,7 +3,9 @@ package di
 import (
 	"secret_keeper/encryptor"
 	"secret_keeper/password"
+	"secret_keeper/token"
 	"secret_keeper/utils"
+	"secret_keeper/validation"
 
 	"github.com/samber/do"
 	"github.com/spf13/viper"
@@ -35,9 +37,20 @@ func provideHasher(i *do.Injector) (password.PassowrdHasher, error) {
 	return password.NewSimplePasswordHasher(), nil
 }
 
+func provideMaker(i *do.Injector) (token.Maker, error) {
+	config := do.MustInvoke[*utils.Config](i)
+	return token.NewPasetoMaker(config.SymmetricKey)
+}
+
+func provideValidator(i *do.Injector) (validation.Validator, error) {
+	return validation.NewSimpleValidator(), nil
+}
+
 func ProvideDeps(configPath string) error {
 	do.Provide(nil, provideConfig(configPath))
 	do.Provide(nil, provideEncryptor)
 	do.Provide(nil, provideHasher)
+	do.Provide(nil, provideMaker)
+	do.Provide(nil, provideValidator)
 	return nil
 }
