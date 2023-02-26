@@ -21,7 +21,8 @@ func (s *Server) SaveSecret(ctx context.Context, req *pb.SaveSecretRequest) (*pb
 	}
 
 	secret := &pb.Secret{
-		Body: str,
+		Title: req.Title,
+		Body:  str,
 	}
 
 	err = s.store.CreateSecret(secret, authPayload.Email)
