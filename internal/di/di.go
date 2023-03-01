@@ -3,6 +3,7 @@ package di
 import (
 	"secret_keeper/encryptor"
 	"secret_keeper/password"
+	"secret_keeper/repository"
 	"secret_keeper/token"
 	"secret_keeper/utils"
 	"secret_keeper/validation"
@@ -44,6 +45,12 @@ func provideMaker(i *do.Injector) (token.Maker, error) {
 
 func provideValidator(i *do.Injector) (validation.Validator, error) {
 	return validation.NewSimpleValidator(), nil
+}
+
+func provideRepository(db ) (repository.Repository, error) {
+	return func (i *do.Injector) (repository.Repository, error) {
+		return repository.NewBoltRepository(), nil
+	}
 }
 
 func ProvideDeps(configPath string) error {

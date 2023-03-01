@@ -18,7 +18,18 @@ import (
 )
 
 func main() {
-	if err := di.ProvideDeps("."); err != nil {
+	boltDb, err := bolt.Open("my.db", 0600, nil)
+	if err != nil {
+		errors.LogErr(err)
+	}
+	defer boltDb.Close()
+
+	err = db.SetupDb(boltDb)
+	if err != nil {
+		errors.LogErr(err)
+	}
+
+	if err := di.ProvideDeps(".", boltDb); err != nil {
 		panic(err)
 	}
 	config := do.MustInvoke[*utils.Config](nil)
@@ -27,17 +38,6 @@ func main() {
 
 	listener, err := net.Listen("tcp", fmt.Sprintf(":%s", config.PORT))
 
-	if err != nil {
-		errors.LogErr(err)
-	}
-
-	boltDb, err := bolt.Open("my.db", 0600, nil)
-	if err != nil {
-		errors.LogErr(err)
-	}
-	defer boltDb.Close()
-
-	err = db.SetupDb(boltDb)
 	if err != nil {
 		errors.LogErr(err)
 	}
