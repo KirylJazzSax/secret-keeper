@@ -163,13 +163,26 @@ func (br *BoltRepository) DeleteAllSecrets(email string) error {
 	})
 }
 
-func NewBoltRepository(db *bolt.DB) *BoltRepository {
-	return &BoltRepository{
-		db: db,
+func NewBoltRepository(dbUrl string) (*BoltRepository, error) {
+	b, err := bolt.Open(dbUrl, 0600, nil)
+	if err != nil {
+		return nil, err
 	}
+
+	if err = setupDb(b); err != nil {
+		return nil, err
+	}
+
+	return &BoltRepository{
+		db: b,
+	}, nil
 }
 
-func SetupDb(db *bolt.DB) error {
+func (repo *BoltRepository) Shutdown() error {
+	return repo.db.Close()
+}
+
+func setupDb(db *bolt.DB) error {
 	return db.Update(func(tx *bolt.Tx) error {
 		_, err := tx.CreateBucketIfNotExists([]byte(usersBucket))
 

@@ -2,17 +2,17 @@ package gapi
 
 import (
 	"context"
-	"secret_keeper/db"
 	"secret_keeper/encryptor"
 	"secret_keeper/errors"
 	"secret_keeper/password"
 	"secret_keeper/pb"
+	"secret_keeper/repository"
 
 	"github.com/samber/do"
 )
 
 func (s *Server) ShowSecret(ctx context.Context, req *pb.ShowSecretRequest) (*pb.ShowSecretResponse, error) {
-	user, err := s.store.GetUser(req.Email)
+	user, err := s.repository.GetUser(req.Email)
 	if err != nil {
 		errors.LogErr(err)
 		return nil, errors.UnAuthErr()
@@ -27,9 +27,9 @@ func (s *Server) ShowSecret(ctx context.Context, req *pb.ShowSecretRequest) (*pb
 		return nil, errors.LogErrAndCreateInternal(err)
 	}
 
-	secret, err := s.store.GetSecret(uint64(req.Id), user.Email)
+	secret, err := s.repository.GetSecret(uint64(req.Id), user.Email)
 
-	if err == db.ErrNotExists {
+	if err == repository.ErrNotExists {
 		errors.LogErr(err)
 		return nil, errors.ErrNotFound()
 	}

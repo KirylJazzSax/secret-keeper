@@ -31,7 +31,7 @@ func (s *Server) SaveSecret(ctx context.Context, req *pb.SaveSecretRequest) (*pb
 		Body:  encoded,
 	}
 
-	if err = s.store.CreateSecret(secret, authPayload.Email); err != nil {
+	if err = s.repository.CreateSecret(secret, authPayload.Email); err != nil {
 		return nil, errors.LogErrAndCreateInternal(err)
 	}
 

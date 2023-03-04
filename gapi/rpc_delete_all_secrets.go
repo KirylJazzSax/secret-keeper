@@ -14,7 +14,7 @@ func (s *Server) DeleteAllSecrets(ctx context.Context, req *pb.DeleteAllSecretsR
 		return nil, errors.UnAuthErr()
 	}
 
-	if err = s.store.DeleteAllSecrets(authPayload.Email); err != nil {
+	if err = s.repository.DeleteAllSecrets(authPayload.Email); err != nil {
 		return nil, errors.LogErrAndCreateInternal(err)
 	}
 

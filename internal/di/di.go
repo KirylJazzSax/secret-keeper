@@ -2,6 +2,7 @@ package di
 
 import (
 	"secret_keeper/encryptor"
+	"secret_keeper/gapi"
 	"secret_keeper/password"
 	"secret_keeper/repository"
 	"secret_keeper/token"
@@ -47,10 +48,16 @@ func provideValidator(i *do.Injector) (validation.Validator, error) {
 	return validation.NewSimpleValidator(), nil
 }
 
-func provideRepository(db ) (repository.Repository, error) {
-	return func (i *do.Injector) (repository.Repository, error) {
-		return repository.NewBoltRepository(), nil
-	}
+func provideRepository(i *do.Injector) (repository.Repository, error) {
+	config := do.MustInvoke[*utils.Config](i)
+	return repository.NewBoltRepository(config.DB_URL)
+}
+
+func provideServer(i *do.Injector) (*gapi.Server, error) {
+	tokenManager := do.MustInvoke[token.Maker](i)
+	repo := do.MustInvoke[repository.Repository](i)
+	config := do.MustInvoke[*utils.Config](i)
+	return gapi.NewServer(repo, tokenManager, config), nil
 }
 
 func ProvideDeps(configPath string) error {
@@ -59,5 +66,7 @@ func ProvideDeps(configPath string) error {
 	do.Provide(nil, provideHasher)
 	do.Provide(nil, provideMaker)
 	do.Provide(nil, provideValidator)
+	do.Provide(nil, provideRepository)
+	do.Provide(nil, provideServer)
 	return nil
 }

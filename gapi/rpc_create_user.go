@@ -2,9 +2,9 @@ package gapi
 
 import (
 	"context"
-	"secret_keeper/db"
 	"secret_keeper/password"
 	"secret_keeper/pb"
+	"secret_keeper/repository"
 	"secret_keeper/validation"
 
 	"secret_keeper/errors"
@@ -41,9 +41,9 @@ func (server *Server) CreateUser(ctx context.Context, request *pb.CreateUserRequ
 		return nil, errors.LogErrAndCreateInternal(err)
 	}
 
-	dbUser := &db.User{User: user, Password: hash}
-	if err = server.store.CreateUser(dbUser); err != nil {
-		if err == db.ErrExists {
+	dbUser := &repository.User{User: user, Password: hash}
+	if err = server.repository.CreateUser(dbUser); err != nil {
+		if err == repository.ErrExists {
 			return nil, status.Errorf(codes.AlreadyExists, err.Error())
 		}
 		errors.LogErr(err)

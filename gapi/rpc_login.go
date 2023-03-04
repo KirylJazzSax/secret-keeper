@@ -2,18 +2,18 @@ package gapi
 
 import (
 	"context"
-	"secret_keeper/db"
 	"secret_keeper/errors"
 	"secret_keeper/password"
 	"secret_keeper/pb"
+	"secret_keeper/repository"
 
 	"github.com/samber/do"
 )
 
 func (server *Server) LoginUser(ctx context.Context, request *pb.LoginRequest) (*pb.LoginResponse, error) {
-	user, err := server.store.GetUser(request.Email)
+	user, err := server.repository.GetUser(request.Email)
 
-	if err == db.ErrNotExists {
+	if err == repository.ErrNotExists {
 		errors.LogErr(err)
 		return nil, errors.ErrNotFound()
 	}
