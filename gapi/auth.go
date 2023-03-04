@@ -6,9 +6,7 @@ import (
 	"secret_keeper/token"
 	"strings"
 
-	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
-	"google.golang.org/grpc/status"
 )
 
 const (
@@ -45,8 +43,4 @@ func (server *Server) getAuthPayload(ctx context.Context) (*token.Payload, error
 	}
 
 	return payload, nil
-}
-
-func UnAuthErr() error {
-	return status.Error(codes.Unauthenticated, "auth error")
 }

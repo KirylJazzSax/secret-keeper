@@ -1,8 +1,8 @@
-package db
+package repository
 
 import "secret_keeper/pb"
 
-type Store interface {
+type Repository interface {
 	CreateUser(user *User) error
 	GetUser(email string) (*User, error)
 	CreateSecret(secret *pb.Secret, email string) error

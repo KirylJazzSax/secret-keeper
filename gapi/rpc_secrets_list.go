@@ -13,7 +13,7 @@ func (s *Server) SecretsList(ctx context.Context, req *pb.SecretsListRequest) (*
 		return nil, errors.ErrInternal()
 	}
 
-	list, err := s.store.SecretsList(authPayload.Email)
+	list, err := s.repository.SecretsList(authPayload.Email)
 	if err != nil {
 		errors.LogErr(err)
 		return nil, errors.ErrInternal()

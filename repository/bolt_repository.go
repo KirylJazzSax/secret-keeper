@@ -1,4 +1,4 @@
-package db
+package repository
 
 import (
 	"encoding/binary"
@@ -19,7 +19,7 @@ var (
 	ErrNotExists = errors.New("not found")
 )
 
-type BoltStore struct {
+type BoltRepository struct {
 	db *bolt.DB
 }
 
@@ -28,8 +28,8 @@ type User struct {
 	Password string `json:"password"`
 }
 
-func (bs *BoltStore) CreateUser(user *User) error {
-	return bs.db.Update(func(tx *bolt.Tx) error {
+func (br *BoltRepository) CreateUser(user *User) error {
+	return br.db.Update(func(tx *bolt.Tx) error {
 		bucket := tx.Bucket([]byte(usersBucket))
 
 		res := bucket.Get([]byte(user.Email))
@@ -46,10 +46,10 @@ func (bs *BoltStore) CreateUser(user *User) error {
 	})
 }
 
-func (bs *BoltStore) GetUser(email string) (*User, error) {
+func (br *BoltRepository) GetUser(email string) (*User, error) {
 	user := &User{}
 
-	err := bs.db.View(func(tx *bolt.Tx) error {
+	err := br.db.View(func(tx *bolt.Tx) error {
 		bucket := tx.Bucket([]byte(usersBucket))
 
 		res := bucket.Get([]byte(email))
@@ -72,8 +72,8 @@ func (bs *BoltStore) GetUser(email string) (*User, error) {
 	return user, nil
 }
 
-func (bs *BoltStore) CreateSecret(secret *pb.Secret, email string) error {
-	return bs.db.Update(func(tx *bolt.Tx) error {
+func (br *BoltRepository) CreateSecret(secret *pb.Secret, email string) error {
+	return br.db.Update(func(tx *bolt.Tx) error {
 		bucket, err := tx.CreateBucketIfNotExists([]byte(email))
 
 		if err != nil {
@@ -92,8 +92,8 @@ func (bs *BoltStore) CreateSecret(secret *pb.Secret, email string) error {
 	})
 }
 
-func (bs *BoltStore) SecretsList(email string) (secrets []*pb.Secret, err error) {
-	err = bs.db.View(func(tx *bolt.Tx) error {
+func (br *BoltRepository) SecretsList(email string) (secrets []*pb.Secret, err error) {
+	err = br.db.View(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte(email))
 		if b == nil {
 			return nil
@@ -118,10 +118,10 @@ func (bs *BoltStore) SecretsList(email string) (secrets []*pb.Secret, err error)
 	return secrets, nil
 }
 
-func (bs *BoltStore) GetSecret(id uint64, email string) (*pb.Secret, error) {
+func (br *BoltRepository) GetSecret(id uint64, email string) (*pb.Secret, error) {
 	secret := &pb.Secret{}
 
-	err := bs.db.View(func(tx *bolt.Tx) error {
+	err := br.db.View(func(tx *bolt.Tx) error {
 		bucket := tx.Bucket([]byte(email))
 		if bucket == nil {
 			return ErrNotExists
@@ -142,8 +142,8 @@ func (bs *BoltStore) GetSecret(id uint64, email string) (*pb.Secret, error) {
 	return secret, nil
 }
 
-func (bs *BoltStore) DeleteSecret(id uint64, email string) error {
-	return bs.db.Update(func(tx *bolt.Tx) error {
+func (br *BoltRepository) DeleteSecret(id uint64, email string) error {
+	return br.db.Update(func(tx *bolt.Tx) error {
 		bucket := tx.Bucket([]byte(email))
 
 		bytesId := itob(id)
@@ -157,19 +157,32 @@ func (bs *BoltStore) DeleteSecret(id uint64, email string) error {
 	})
 }
 
-func (bs *BoltStore) DeleteAllSecrets(email string) error {
-	return bs.db.Update(func(tx *bolt.Tx) error {
+func (br *BoltRepository) DeleteAllSecrets(email string) error {
+	return br.db.Update(func(tx *bolt.Tx) error {
 		return tx.DeleteBucket([]byte(email))
 	})
 }
 
-func NewBoltStore(db *bolt.DB) Store {
-	return &BoltStore{
-		db: db,
+func NewBoltRepository(dbUrl string) (*BoltRepository, error) {
+	b, err := bolt.Open(dbUrl, 0600, nil)
+	if err != nil {
+		return nil, err
 	}
+
+	if err = setupDb(b); err != nil {
+		return nil, err
+	}
+
+	return &BoltRepository{
+		db: b,
+	}, nil
 }
 
-func SetupDb(db *bolt.DB) error {
+func (repo *BoltRepository) Shutdown() error {
+	return repo.db.Close()
+}
+
+func setupDb(db *bolt.DB) error {
 	return db.Update(func(tx *bolt.Tx) error {
 		_, err := tx.CreateBucketIfNotExists([]byte(usersBucket))
 

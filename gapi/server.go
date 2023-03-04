@@ -1,29 +1,23 @@
 package gapi
 
 import (
-	"fmt"
-	"secret_keeper/db"
 	"secret_keeper/pb"
+	"secret_keeper/repository"
 	"secret_keeper/token"
 	"secret_keeper/utils"
 )
 
 type Server struct {
 	pb.UnimplementedSecretKeeperServer
-	store        db.Store
+	repository   repository.Repository
 	tokenManager token.Maker
-	config       utils.Config
+	config       *utils.Config
 }
 
-func NewServer(store db.Store, config utils.Config) (*Server, error) {
-	manager, err := token.NewPasetoMaker(config.SymmetricKey)
-	if err != nil {
-		return nil, fmt.Errorf("could not create tokenmanager")
-	}
-
+func NewServer(repo repository.Repository, manager token.Maker, config *utils.Config) *Server {
 	return &Server{
-		store:        store,
+		repository:   repo,
 		tokenManager: manager,
 		config:       config,
-	}, nil
+	}
 }

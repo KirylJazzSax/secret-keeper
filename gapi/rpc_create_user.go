@@ -2,13 +2,14 @@ package gapi
 
 import (
 	"context"
-	"secret_keeper/db"
 	"secret_keeper/password"
 	"secret_keeper/pb"
+	"secret_keeper/repository"
 	"secret_keeper/validation"
 
 	"secret_keeper/errors"
 
+	"github.com/samber/do"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -21,25 +22,30 @@ func (server *Server) CreateUser(ctx context.Context, request *pb.CreateUserRequ
 		CreatedAt: timestamppb.Now(),
 	}
 
-	violations := validateRequest(user)
+	v, err := do.Invoke[validation.Validator](nil)
+	if err != nil {
+		return nil, errors.LogErrAndCreateInternal(err)
+	}
 
-	if len(violations) > 0 {
+	if violations := validateRequest(user, v); len(violations) > 0 {
 		return nil, errors.InvalidArgumentError(violations)
 	}
 
-	hash, err := password.Hash(request.Password)
+	hasher, err := do.Invoke[password.PassowrdHasher](nil)
 	if err != nil {
-		errors.LogErr(err)
-		return nil, errors.ErrInternal()
+		return nil, errors.LogErrAndCreateInternal(err)
 	}
 
-	dbUser := &db.User{User: user, Password: hash}
-	err = server.store.CreateUser(dbUser)
-	if err == db.ErrExists {
-		return nil, status.Errorf(codes.AlreadyExists, err.Error())
+	var hash string
+	if err = hasher.Hash(request.Password, &hash); err != nil {
+		return nil, errors.LogErrAndCreateInternal(err)
 	}
 
-	if err != nil {
+	dbUser := &repository.User{User: user, Password: hash}
+	if err = server.repository.CreateUser(dbUser); err != nil {
+		if err == repository.ErrExists {
+			return nil, status.Errorf(codes.AlreadyExists, err.Error())
+		}
 		errors.LogErr(err)
 		return nil, errors.ErrInternal()
 	}
@@ -47,8 +53,8 @@ func (server *Server) CreateUser(ctx context.Context, request *pb.CreateUserRequ
 	return &pb.CreateUserResponse{User: user}, nil
 }
 
-func validateRequest(user *pb.User) (violations []*errdetails.BadRequest_FieldViolation) {
-	if err := validation.ValidateEmail(user.Email); err != nil {
+func validateRequest(user *pb.User, v validation.Validator) (violations []*errdetails.BadRequest_FieldViolation) {
+	if err := v.ValidateEmail(user.Email); err != nil {
 		violations = append(violations, &errdetails.BadRequest_FieldViolation{Field: "email", Description: err.Error()})
 	}
 	return violations

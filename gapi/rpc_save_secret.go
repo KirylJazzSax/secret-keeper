@@ -5,30 +5,34 @@ import (
 	"secret_keeper/encryptor"
 	"secret_keeper/errors"
 	"secret_keeper/pb"
+
+	"github.com/samber/do"
 )
 
 func (s *Server) SaveSecret(ctx context.Context, req *pb.SaveSecretRequest) (*pb.SaveSecretResponse, error) {
 	authPayload, err := s.getAuthPayload(ctx)
 	if err != nil {
 		errors.LogErr(err)
-		return nil, UnAuthErr()
+		return nil, errors.UnAuthErr()
+	}
+	encr, err := do.Invoke[encryptor.Encryptor](nil)
+
+	if err != nil {
+		return nil, errors.LogErrAndCreateInternal(err)
 	}
 
-	str, err := encryptor.Encrypt(req.Body, s.config.SECRET_KEY, s.config.IV)
-	if err != nil {
-		errors.LogErr(err)
-		return nil, errors.ErrInternal()
+	var encoded string
+	if err = encr.Encrypt(req.Body, &encoded); err != nil {
+		return nil, errors.LogErrAndCreateInternal(err)
 	}
 
 	secret := &pb.Secret{
-		Body: str,
+		Title: req.Title,
+		Body:  encoded,
 	}
 
-	err = s.store.CreateSecret(secret, authPayload.Email)
-
-	if err != nil {
-		errors.LogErr(err)
-		return nil, errors.ErrInternal()
+	if err = s.repository.CreateSecret(secret, authPayload.Email); err != nil {
+		return nil, errors.LogErrAndCreateInternal(err)
 	}
 
 	return &pb.SaveSecretResponse{

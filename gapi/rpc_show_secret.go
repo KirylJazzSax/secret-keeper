@@ -2,43 +2,53 @@ package gapi
 
 import (
 	"context"
-	"secret_keeper/db"
 	"secret_keeper/encryptor"
 	"secret_keeper/errors"
 	"secret_keeper/password"
 	"secret_keeper/pb"
+	"secret_keeper/repository"
+
+	"github.com/samber/do"
 )
 
 func (s *Server) ShowSecret(ctx context.Context, req *pb.ShowSecretRequest) (*pb.ShowSecretResponse, error) {
-	user, err := s.store.GetUser(req.Email)
+	user, err := s.repository.GetUser(req.Email)
 	if err != nil {
 		errors.LogErr(err)
-		return nil, UnAuthErr()
+		return nil, errors.UnAuthErr()
 	}
 
-	err = password.Check(req.Password, user.Password)
-
+	hasher, err := do.Invoke[password.PassowrdHasher](nil)
 	if err != nil {
-		return nil, errors.ErrInternal()
+		return nil, errors.LogErrAndCreateInternal(err)
 	}
 
-	secret, err := s.store.GetSecret(uint64(req.Id), user.Email)
+	if err = hasher.Check(req.Password, user.Password); err != nil {
+		return nil, errors.LogErrAndCreateInternal(err)
+	}
 
-	if err == db.ErrNotExists {
+	secret, err := s.repository.GetSecret(uint64(req.Id), user.Email)
+
+	if err == repository.ErrNotExists {
 		errors.LogErr(err)
 		return nil, errors.ErrNotFound()
 	}
 
 	if err != nil {
-		errors.LogErr(err)
-		return nil, errors.ErrInternal()
+		return nil, errors.LogErrAndCreateInternal(err)
 	}
 
-	secret.Body, err = encryptor.Decrypt(secret.Body, s.config.SECRET_KEY, s.config.IV)
+	encr, err := do.Invoke[encryptor.Encryptor](nil)
 	if err != nil {
-		errors.LogErr(err)
-		return nil, errors.ErrInternal()
+		return nil, errors.LogErrAndCreateInternal(err)
 	}
+
+	var decripted string
+	if err = encr.Decrypt(secret.Body, &decripted); err != nil {
+		return nil, errors.LogErrAndCreateInternal(err)
+	}
+
+	secret.Body = decripted
 
 	return &pb.ShowSecretResponse{
 		Secret: secret,

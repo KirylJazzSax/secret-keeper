@@ -15,6 +15,7 @@ type Config struct {
 	PORT                string        `mapstructure:"PORT"`
 	IV                  string        `mapstructure:"IV"`
 	SECRET_KEY          string        `mapstructure:"SECRET_KEY"`
+	DB_URL              string        `mapstructure:"DB_URL"`
 }
 
 // LoadConfig reads configuration from file or environment variables.
