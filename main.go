@@ -1,8 +1,10 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"net"
+	"net/http"
 	"secret_keeper/errors"
 	"secret_keeper/gapi"
 	"secret_keeper/internal/di"
@@ -10,11 +12,31 @@ import (
 	"secret_keeper/repository"
 	"secret_keeper/utils"
 
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+
 	"github.com/rs/zerolog/log"
 	"github.com/samber/do"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/reflection"
 )
+
+func runGatewayServer(fromEndpoint string) {
+	config := do.MustInvoke[*utils.Config](nil)
+
+	grpcMux := runtime.NewServeMux()
+	mux := http.NewServeMux()
+	mux.Handle("/", grpcMux)
+
+	listener, _ := net.Listen("tcp", fmt.Sprintf(":%s", config.HTTP_PORT))
+	opts := []grpc.DialOption{
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
+	}
+	pb.RegisterSecretKeeperHandlerFromEndpoint(context.Background(), grpcMux, fromEndpoint, opts)
+	if err := http.Serve(listener, mux); err != nil {
+		panic(err)
+	}
+}
 
 func main() {
 	if err := di.ProvideDeps("."); err != nil {
@@ -28,7 +50,8 @@ func main() {
 
 	grpcServer := grpc.NewServer()
 
-	listener, err := net.Listen("tcp", fmt.Sprintf(":%s", config.PORT))
+	endpoint := fmt.Sprintf(":%s", config.PORT)
+	listener, err := net.Listen("tcp", endpoint)
 	if err != nil {
 		errors.LogErr(err)
 	}
@@ -36,9 +59,11 @@ func main() {
 	pb.RegisterSecretKeeperServer(grpcServer, server)
 	reflection.Register(grpcServer)
 
+	go runGatewayServer(endpoint)
+
 	log.Info().Msg("server runs")
 	err = grpcServer.Serve(listener)
 	if err != nil {
-		log.Error().Stack().Err(err)
+		panic(err)
 	}
 }
