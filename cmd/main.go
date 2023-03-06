@@ -32,6 +32,10 @@ func runGatewayServer(fromEndpoint string) {
 	opts := []grpc.DialOption{
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 	}
+
+	docHandler := http.FileServer(http.Dir("./docs/swagger"))
+	mux.Handle("/swagger/", http.StripPrefix("/swagger/", docHandler))
+
 	pb.RegisterSecretKeeperHandlerFromEndpoint(context.Background(), grpcMux, fromEndpoint, opts)
 	if err := http.Serve(listener, mux); err != nil {
 		panic(err)
