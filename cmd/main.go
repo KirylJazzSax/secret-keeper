@@ -26,7 +26,13 @@ func runGatewayServer(fromEndpoint string) {
 
 	grpcMux := runtime.NewServeMux()
 	mux := http.NewServeMux()
-	mux.Handle("/", grpcMux)
+	mux.Handle("/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", config.CORS)
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, Authorization, ResponseType")
+
+		grpcMux.ServeHTTP(w, r)
+	}))
 
 	listener, _ := net.Listen("tcp", fmt.Sprintf(":%s", config.HTTP_PORT))
 	opts := []grpc.DialOption{
