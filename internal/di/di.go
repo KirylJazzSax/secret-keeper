@@ -32,7 +32,7 @@ func provideConfig(path string) func(*do.Injector) (*utils.Config, error) {
 
 func provideEncryptor(i *do.Injector) (encryptor.Encryptor, error) {
 	config := do.MustInvoke[*utils.Config](i)
-	return encryptor.NewSimpleEncryptor(config.SECRET_KEY, config.IV), nil
+	return encryptor.NewSimpleEncryptor(config.SecretKey, config.IV), nil
 }
 
 func provideHasher(i *do.Injector) (password.PassowrdHasher, error) {
@@ -50,7 +50,7 @@ func provideValidator(i *do.Injector) (validation.Validator, error) {
 
 func provideRepository(i *do.Injector) (repository.Repository, error) {
 	config := do.MustInvoke[*utils.Config](i)
-	return repository.NewBoltRepository(config.DB_URL)
+	return repository.NewBoltRepository(config.DbUrl)
 }
 
 func provideServer(i *do.Injector) (*gapi.Server, error) {

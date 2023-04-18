@@ -2,6 +2,7 @@ package gapi
 
 import (
 	"context"
+
 	"secret_keeper/errors"
 	"secret_keeper/password"
 	"secret_keeper/pb"

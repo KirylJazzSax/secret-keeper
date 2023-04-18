@@ -9,7 +9,7 @@ import (
 
 func InvalidArgumentError(violations []*errdetails.BadRequest_FieldViolation) error {
 	badRequest := &errdetails.BadRequest{FieldViolations: violations}
-	statusInvalid := status.New(codes.InvalidArgument, "invalid parameters")
+	statusInvalid := status.New(codes.InvalidArgument, "invalid parameters.")
 
 	statusDetails, err := statusInvalid.WithDetails(badRequest)
 	if err != nil {
@@ -20,16 +20,16 @@ func InvalidArgumentError(violations []*errdetails.BadRequest_FieldViolation) er
 }
 
 func ErrNotFound() error {
-	return status.Error(codes.NotFound, "not found")
+	return status.Error(codes.NotFound, "not found.")
 }
 
 func ErrInternal() error {
-	return status.Error(codes.Internal, "internal error")
+	return status.Error(codes.Internal, "internal error.")
 }
 
 func LogErrAndCreateInternal(err error) error {
 	LogErr(err)
-	return status.Error(codes.Internal, "internal error")
+	return status.Error(codes.Internal, "internal error.")
 }
 
 func LogErr(err error) {
@@ -37,5 +37,5 @@ func LogErr(err error) {
 }
 
 func UnAuthErr() error {
-	return status.Error(codes.Unauthenticated, "auth error")
+	return status.Error(codes.Unauthenticated, "auth error.")
 }

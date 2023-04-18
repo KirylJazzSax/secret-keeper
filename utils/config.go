@@ -12,12 +12,12 @@ type Config struct {
 	GRPCServerAddress   string        `mapstructure:"GRPC_SERVER_ADDRESS"`
 	SymmetricKey        string        `mapstructure:"SYMMETRIC_KEY"`
 	AccessTokenDuration time.Duration `mapstructure:"ACCESS_TOKEN_DURATION"`
-	PORT                string        `mapstructure:"PORT"`
+	Port                string        `mapstructure:"PORT"`
 	IV                  string        `mapstructure:"IV"`
-	SECRET_KEY          string        `mapstructure:"SECRET_KEY"`
-	DB_URL              string        `mapstructure:"DB_URL"`
-	HTTP_PORT           string        `mapstructure:"HTTP_PORT"`
-	CORS                string        `mapstructure:"CORS"`
+	SecretKey           string        `mapstructure:"SECRET_KEY"`
+	DbUrl               string        `mapstructure:"DB_URL"`
+	HttpPort            string        `mapstructure:"HTTP_PORT"`
+	Cors                string        `mapstructure:"CORS"`
 }
 
 // LoadConfig reads configuration from file or environment variables.
