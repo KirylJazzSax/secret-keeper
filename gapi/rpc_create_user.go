@@ -2,12 +2,12 @@ package gapi
 
 import (
 	"context"
+
+	"secret_keeper/errors"
 	"secret_keeper/password"
 	"secret_keeper/pb"
 	"secret_keeper/repository"
 	"secret_keeper/validation"
-
-	"secret_keeper/errors"
 
 	"github.com/samber/do"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"

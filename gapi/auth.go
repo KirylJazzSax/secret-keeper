@@ -3,8 +3,9 @@ package gapi
 import (
 	"context"
 	"fmt"
-	"secret_keeper/token"
 	"strings"
+
+	"secret_keeper/token"
 
 	"google.golang.org/grpc/metadata"
 )

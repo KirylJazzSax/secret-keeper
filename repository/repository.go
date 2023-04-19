@@ -11,3 +11,16 @@ type Repository interface {
 	DeleteSecret(id uint64, email string) error
 	DeleteAllSecrets(email string) error
 }
+
+type UserRepository interface {
+	CreateUser(user *User) error
+	GetUser(email string) (*User, error)
+}
+
+type SecretRepository interface {
+	CreateSecret(secret *pb.Secret, email string) error
+	SecretsList(email string) ([]*pb.Secret, error)
+	GetSecret(id uint64, email string) (*pb.Secret, error)
+	DeleteSecret(id uint64, email string) error
+	DeleteAllSecrets(email string) error
+}
