@@ -1,13 +1,13 @@
 package di
 
 import (
-	"secret_keeper/encryptor"
-	"secret_keeper/gapi"
-	"secret_keeper/internal/common/utils"
-	"secret_keeper/password"
-	"secret_keeper/repository"
-	"secret_keeper/token"
-	"secret_keeper/validation"
+	"github.com/KirylJazzSax/secret-keeper/encryptor"
+	"github.com/KirylJazzSax/secret-keeper/gapi"
+	"github.com/KirylJazzSax/secret-keeper/internal/common/utils"
+	"github.com/KirylJazzSax/secret-keeper/password"
+	"github.com/KirylJazzSax/secret-keeper/repository"
+	"github.com/KirylJazzSax/secret-keeper/token"
+	"github.com/KirylJazzSax/secret-keeper/validation"
 
 	"github.com/samber/do"
 	"github.com/spf13/viper"
