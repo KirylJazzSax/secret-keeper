@@ -1,3 +1,3 @@
-module secret-keeper/internal/auth
+module github.com/KirylJazzSax/secret-keeper/internal/auth
 
 go 1.20
