@@ -3,7 +3,7 @@ module github.com/KirylJazzSax/secret-keeper/internal/user
 go 1.20
 
 require (
-	github.com/KirylJazzSax/secret-keeper/internal/common v0.0.0-20230625112058-ccf966694238
+	github.com/KirylJazzSax/secret-keeper/internal/common v0.0.0-20230625201907-f0e4820bb27d
 	github.com/boltdb/bolt v1.3.1
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.16.0
 	github.com/rs/zerolog v1.29.1

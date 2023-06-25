@@ -7,7 +7,6 @@ import (
 
 	"github.com/KirylJazzSax/secret-keeper/internal/common/errors"
 	"github.com/KirylJazzSax/secret-keeper/internal/user/domain"
-
 	"github.com/boltdb/bolt"
 )
 
