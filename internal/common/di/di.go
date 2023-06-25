@@ -1,13 +1,11 @@
 package di
 
 import (
-	"github.com/KirylJazzSax/secret-keeper/encryptor"
-	"github.com/KirylJazzSax/secret-keeper/gapi"
+	"github.com/KirylJazzSax/secret-keeper/internal/common/encryptor"
+	"github.com/KirylJazzSax/secret-keeper/internal/common/password"
+	"github.com/KirylJazzSax/secret-keeper/internal/common/token"
 	"github.com/KirylJazzSax/secret-keeper/internal/common/utils"
-	"github.com/KirylJazzSax/secret-keeper/password"
-	"github.com/KirylJazzSax/secret-keeper/repository"
-	"github.com/KirylJazzSax/secret-keeper/token"
-	"github.com/KirylJazzSax/secret-keeper/validation"
+	"github.com/KirylJazzSax/secret-keeper/internal/common/validation"
 
 	"github.com/samber/do"
 	"github.com/spf13/viper"
@@ -48,17 +46,17 @@ func provideValidator(i *do.Injector) (validation.Validator, error) {
 	return validation.NewSimpleValidator(), nil
 }
 
-func provideRepository(i *do.Injector) (repository.Repository, error) {
-	config := do.MustInvoke[*utils.Config](i)
-	return repository.NewBoltRepository(config.DbUrl)
-}
+// func provideRepository(i *do.Injector) (repository.Repository, error) {
+// 	config := do.MustInvoke[*utils.Config](i)
+// 	return repository.NewBoltRepository(config.DbUrl)
+// }
 
-func provideServer(i *do.Injector) (*gapi.Server, error) {
-	tokenManager := do.MustInvoke[token.Maker](i)
-	repo := do.MustInvoke[repository.Repository](i)
-	config := do.MustInvoke[*utils.Config](i)
-	return gapi.NewServer(repo, tokenManager, config), nil
-}
+// func provideServer(i *do.Injector) (*gapi.Server, error) {
+// 	tokenManager := do.MustInvoke[token.Maker](i)
+// 	repo := do.MustInvoke[repository.Repository](i)
+// 	config := do.MustInvoke[*utils.Config](i)
+// 	return gapi.NewServer(repo, tokenManager, config), nil
+// }
 
 func ProvideDeps(configPath string) error {
 	do.Provide(nil, provideConfig(configPath))
@@ -66,7 +64,7 @@ func ProvideDeps(configPath string) error {
 	do.Provide(nil, provideHasher)
 	do.Provide(nil, provideMaker)
 	do.Provide(nil, provideValidator)
-	do.Provide(nil, provideRepository)
-	do.Provide(nil, provideServer)
+	// do.Provide(nil, provideRepository)
+	// do.Provide(nil, provideServer)
 	return nil
 }
