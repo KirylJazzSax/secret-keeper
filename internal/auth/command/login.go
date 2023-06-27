@@ -29,7 +29,7 @@ type LoginUserHandler struct {
 }
 
 func (h *LoginUserHandler) Handle(ctx context.Context, payload Payload) error {
-	user, err := h.repo.GetUser(payload.Email)
+	user, err := h.repo.GetUser(ctx, payload.Email)
 
 	if err == errors.ErrNotExists {
 		return nil, errors.ErrNotExists
