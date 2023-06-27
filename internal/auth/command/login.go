@@ -16,7 +16,7 @@ type Payload struct {
 	Email     string
 	Password  string
 	AuthToken string
-	ExpiredAt timestamppb.Timestamp
+	ExpiredAt *timestamppb.Timestamp
 }
 
 type LoginUserHandlerType common.CommandHandler[*Payload]
