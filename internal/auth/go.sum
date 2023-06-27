@@ -42,6 +42,8 @@ github.com/KirylJazzSax/secret-keeper/internal/common v0.0.0-20230627195320-504b
 github.com/KirylJazzSax/secret-keeper/internal/common v0.0.0-20230627195320-504b5b1baa8a/go.mod h1:hoReaKNq+zFJqt6MDRoNUaQyP1EbtHwncHZoUVlSSiI=
 github.com/KirylJazzSax/secret-keeper/internal/common v0.0.0-20230627202742-72c90924bcd9 h1:zCU9agHKzrhjnVRC9iJTKr9+oyzk5AAcSPXbJZLjNQg=
 github.com/KirylJazzSax/secret-keeper/internal/common v0.0.0-20230627202742-72c90924bcd9/go.mod h1:hoReaKNq+zFJqt6MDRoNUaQyP1EbtHwncHZoUVlSSiI=
+github.com/KirylJazzSax/secret-keeper/internal/common v0.0.0-20230627205101-8eaafa8b2f05 h1:At5cPq1NiXDi2x5hIokOU3CmwXD7alqdF4UoWFWomrQ=
+github.com/KirylJazzSax/secret-keeper/internal/common v0.0.0-20230627205101-8eaafa8b2f05/go.mod h1:hoReaKNq+zFJqt6MDRoNUaQyP1EbtHwncHZoUVlSSiI=
 github.com/KirylJazzSax/secret-keeper/internal/user v0.0.0-20230627182914-5c2f56fe8479 h1:F2sD0RDosFFGYlq1xa7TVGh5Psi0lKiNXupuNGOwpr4=
 github.com/KirylJazzSax/secret-keeper/internal/user v0.0.0-20230627182914-5c2f56fe8479/go.mod h1:cyjB3eYp0vd4mS7/p4SxODV7Y+kEy9mJLoCAH02LfxU=
 github.com/KirylJazzSax/secret-keeper/internal/user v0.0.0-20230627201720-163b77f6a03f h1:My80NZjAuitqRwi2Ky3EoixWNEiBX/Apg9clDYhOQUA=
