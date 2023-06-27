@@ -16,7 +16,7 @@ type Server struct {
 	application app.Application
 }
 
-func NewServer(application app.Application) *Server {
+func NewServer(application *app.Application) *Server {
 	return &Server{
 		application: application,
 	}

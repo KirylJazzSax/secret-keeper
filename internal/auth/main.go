@@ -22,6 +22,10 @@ import (
 func main() {
 	config := do.MustInvoke[*utils.Config](nil)
 	b, err := bolt.Open(config.DbUrl, 0600, nil)
+	if err != nil {
+		panic(err)
+	}
+
 	tokenManager := do.MustInvoke[token.Maker](nil)
 	repo := repository.NewUserRepository(b)
 	hasher := do.MustInvoke[password.PassowrdHasher](nil)
