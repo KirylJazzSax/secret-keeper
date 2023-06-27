@@ -27,7 +27,7 @@ func (s *Server) LoginUser(ctx context.Context, request *auth.LoginRequest) (*au
 		Email:     request.Email,
 		Password:  request.Password,
 		AuthToken: "",
-		ExpiredAt: timestamppb.Now(),
+		ExpiredAt: *timestamppb.Now(),
 	}
 	user, err := s.application.LoginUserCommand.Handle(ctx, payload)
 
