@@ -49,7 +49,7 @@ func (h *LoginUserHandler) Handle(ctx context.Context, payload *Payload) error {
 	}
 
 	payload.AuthToken = token
-	payload.ExpiredAt = p.ExpiredAt.AsTime()
+	payload.ExpiredAt = p.ExpiredAt
 
 	return nil
 }
