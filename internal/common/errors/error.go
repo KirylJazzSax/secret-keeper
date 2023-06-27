@@ -11,6 +11,8 @@ import (
 
 var ErrExists = errors.New("already exists.")
 var ErrNotExists = errors.New("not found.")
+var ErrEmailOrPasswordNotValid = errors.New("email or password not valid.")
+var ErrInteralServer = errors.New("internal error.")
 
 func InvalidArgumentError(violations []*errdetails.BadRequest_FieldViolation) error {
 	badRequest := &errdetails.BadRequest{FieldViolations: violations}
