@@ -29,7 +29,7 @@ func (s *Server) LoginUser(ctx context.Context, request *auth.LoginRequest) (*au
 		AuthToken: "",
 		ExpiredAt: *timestamppb.Now(),
 	}
-	user, err := s.application.LoginUserCommand.Handle(ctx, payload)
+	err := s.application.LoginUserCommand.Handle(ctx, payload)
 
 	if err == errors.ErrNotExists {
 		errors.LogErr(err)
@@ -48,6 +48,6 @@ func (s *Server) LoginUser(ctx context.Context, request *auth.LoginRequest) (*au
 
 	return &auth.LoginResponse{
 		AccessToken:          payload.Token,
-		AccessTokenExpiresAt: payload.ExpiredAt,
+		AccessTokenExpiresAt: *payload.ExpiredAt,
 	}, nil
 }
