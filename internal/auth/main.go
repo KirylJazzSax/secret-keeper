@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/KirylJazzSax/secret-keeper/internal/auth/application"
+	"github.com/KirylJazzSax/secret-keeper/internal/auth/app"
 	"github.com/KirylJazzSax/secret-keeper/internal/auth/server"
 	"github.com/KirylJazzSax/secret-keeper/internal/common/gen/auth"
 	"github.com/KirylJazzSax/secret-keeper/internal/common/password"
@@ -26,14 +26,14 @@ func main() {
 	repo := repository.NewUserRepository(b)
 	hasher := do.MustInvoke[password.PassowrdHasher](nil)
 
-	app := application.NewApplication(
+	application := app.NewApplication(
 		tokenManager,
 		hasher,
 		repo,
 		config,
 	)
 
-	s := server.NewServer(app)
+	s := server.NewServer(application)
 
 	endpoint := fmt.Sprintf(":%s", config.Port)
 
