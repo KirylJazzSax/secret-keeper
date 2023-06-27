@@ -47,7 +47,7 @@ func (s *Server) LoginUser(ctx context.Context, request *auth.LoginRequest) (*au
 	}
 
 	return &auth.LoginResponse{
-		AccessToken:          payload.Token,
+		AccessToken:          payload.AuthToken,
 		AccessTokenExpiresAt: *payload.ExpiredAt,
 	}, nil
 }
