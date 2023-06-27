@@ -6,6 +6,7 @@ import (
 
 	"github.com/KirylJazzSax/secret-keeper/internal/auth/app"
 	"github.com/KirylJazzSax/secret-keeper/internal/auth/server"
+	"github.com/KirylJazzSax/secret-keeper/internal/common/di"
 	"github.com/KirylJazzSax/secret-keeper/internal/common/gen/auth"
 	"github.com/KirylJazzSax/secret-keeper/internal/common/password"
 	commonServer "github.com/KirylJazzSax/secret-keeper/internal/common/server"
@@ -20,6 +21,8 @@ import (
 )
 
 func main() {
+	di.ProvideDeps(".")
+
 	config := do.MustInvoke[*utils.Config](nil)
 	b, err := bolt.Open(config.DbUrl, 0600, nil)
 	if err != nil {
