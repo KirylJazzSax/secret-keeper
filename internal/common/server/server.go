@@ -15,12 +15,12 @@ import (
 func RunGRPCServer(endpoint string, cb func(s *grpc.Server)) error {
 	grpcServer := grpc.NewServer()
 
-	cb(grpcServer)
-
 	listener, err := net.Listen("tcp", endpoint)
 	if err != nil {
 		return err
 	}
+
+	cb(grpcServer)
 
 	log.Info().Msg("server runs")
 	err = grpcServer.Serve(listener)
