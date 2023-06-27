@@ -19,7 +19,7 @@ type Payload struct {
 	ExpiredAt time.Time
 }
 
-type LoginUserHandlerType common.CommandHandler[Payload]
+type LoginUserHandlerType common.CommandHandler[*Payload]
 
 type LoginUserHandler struct {
 	tokenManager token.Maker
