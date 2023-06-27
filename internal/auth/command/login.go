@@ -28,7 +28,7 @@ type LoginUserHandler struct {
 	config       *utils.Config
 }
 
-func (h *LoginUserHandler) Handle(ctx context.Context, payload Payload) error {
+func (h *LoginUserHandler) Handle(ctx context.Context, payload *Payload) error {
 	user, err := h.repo.GetUser(ctx, payload.Email)
 
 	if err == errors.ErrNotExists {

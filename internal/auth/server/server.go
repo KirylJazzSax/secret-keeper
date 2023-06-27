@@ -2,14 +2,13 @@ package server
 
 import (
 	"context"
-	"time"
 
 	"github.com/KirylJazzSax/secret-keeper/internal/auth/app"
 	"github.com/KirylJazzSax/secret-keeper/internal/auth/command"
 	"github.com/KirylJazzSax/secret-keeper/internal/common/errors"
 	"github.com/KirylJazzSax/secret-keeper/internal/common/gen/auth"
-
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 type Server struct {
@@ -28,7 +27,7 @@ func (s *Server) LoginUser(ctx context.Context, request *auth.LoginRequest) (*au
 		Email:     request.Email,
 		Password:  request.Password,
 		Token:     "",
-		ExpiredAt: time.Now(),
+		ExpiredAt: timestamppb.Now(),
 	}
 	user, err := s.application.LoginUserCommand.Handle(ctx, payload)
 

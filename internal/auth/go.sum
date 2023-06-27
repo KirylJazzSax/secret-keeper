@@ -40,6 +40,8 @@ github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
 github.com/KirylJazzSax/secret-keeper/internal/common v0.0.0-20230627195320-504b5b1baa8a h1:U9r7cLkyWvS/DjC/ulQhqR24WbStEcJ7IZl3COBwMNo=
 github.com/KirylJazzSax/secret-keeper/internal/common v0.0.0-20230627195320-504b5b1baa8a/go.mod h1:hoReaKNq+zFJqt6MDRoNUaQyP1EbtHwncHZoUVlSSiI=
+github.com/KirylJazzSax/secret-keeper/internal/common v0.0.0-20230627202742-72c90924bcd9 h1:zCU9agHKzrhjnVRC9iJTKr9+oyzk5AAcSPXbJZLjNQg=
+github.com/KirylJazzSax/secret-keeper/internal/common v0.0.0-20230627202742-72c90924bcd9/go.mod h1:hoReaKNq+zFJqt6MDRoNUaQyP1EbtHwncHZoUVlSSiI=
 github.com/KirylJazzSax/secret-keeper/internal/user v0.0.0-20230627182914-5c2f56fe8479 h1:F2sD0RDosFFGYlq1xa7TVGh5Psi0lKiNXupuNGOwpr4=
 github.com/KirylJazzSax/secret-keeper/internal/user v0.0.0-20230627182914-5c2f56fe8479/go.mod h1:cyjB3eYp0vd4mS7/p4SxODV7Y+kEy9mJLoCAH02LfxU=
 github.com/KirylJazzSax/secret-keeper/internal/user v0.0.0-20230627201720-163b77f6a03f h1:My80NZjAuitqRwi2Ky3EoixWNEiBX/Apg9clDYhOQUA=
