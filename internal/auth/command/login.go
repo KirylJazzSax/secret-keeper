@@ -2,7 +2,6 @@ package command
 
 import (
 	"context"
-	"time"
 
 	"github.com/KirylJazzSax/secret-keeper/internal/common"
 	"github.com/KirylJazzSax/secret-keeper/internal/common/errors"
@@ -10,13 +9,14 @@ import (
 	"github.com/KirylJazzSax/secret-keeper/internal/common/token"
 	"github.com/KirylJazzSax/secret-keeper/internal/common/utils"
 	"github.com/KirylJazzSax/secret-keeper/internal/user/domain"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 type Payload struct {
 	Email     string
 	Password  string
 	AuthToken string
-	ExpiredAt time.Time
+	ExpiredAt *timestamppb.Timestamp
 }
 
 type LoginUserHandlerType common.CommandHandler[*Payload]
