@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/KirylJazzSax/secret-keeper/internal/common v0.0.0-20230627202742-72c90924bcd9
-	github.com/KirylJazzSax/secret-keeper/internal/user v0.0.0-20230627201720-163b77f6a03f
+	github.com/KirylJazzSax/secret-keeper/internal/user v0.0.0-20230627204146-e564b22b4924
 	github.com/boltdb/bolt v1.3.1
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.16.0
 	github.com/samber/do v1.6.0
