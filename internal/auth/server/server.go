@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"time"
 
 	"github.com/KirylJazzSax/secret-keeper/internal/auth/app"
 	"github.com/KirylJazzSax/secret-keeper/internal/auth/command"
@@ -24,8 +25,10 @@ func NewServer(application app.Application) *Server {
 
 func (s *Server) LoginUser(ctx context.Context, request *auth.LoginRequest) (*auth.LoginResponse, error) {
 	payload := &command.Payload{
-		Email:    request.Email,
-		Password: request.Password,
+		Email:     request.Email,
+		Password:  request.Password,
+		Token:     "",
+		ExpiredAt: time.Now(),
 	}
 	user, err := s.application.LoginUserCommand.Handle(ctx, payload)
 
