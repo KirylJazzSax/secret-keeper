@@ -36,7 +36,7 @@ func (h *LoginUserHandler) Handle(ctx context.Context, payload Payload) error {
 	}
 
 	if err != nil {
-		return errors.ErrInternal
+		return errors.ErrInteralServer
 	}
 
 	if err = h.hasher.Check(payload.Password, user.Password); err != nil {
