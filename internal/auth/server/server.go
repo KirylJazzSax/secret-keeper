@@ -13,7 +13,7 @@ import (
 
 type Server struct {
 	auth.UnimplementedAuthServiceServer
-	application app.Application
+	application *app.Application
 }
 
 func NewServer(application *app.Application) *Server {
