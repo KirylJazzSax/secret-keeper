@@ -47,7 +47,7 @@ func RunGatewayServer(corsOrigin string, httpPort string, cb func(mux *runtime.S
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 	}
 
-	cb(httpMux, opts)
+	cb(grpcMux, opts)
 	if err := http.Serve(listener, httpMux); err != nil {
 		return err
 	}
