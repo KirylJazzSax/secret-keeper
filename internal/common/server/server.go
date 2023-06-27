@@ -33,8 +33,8 @@ func RunGRPCServer(endpoint string, cb func(s *grpc.Server)) error {
 
 func RunGatewayServer(corsOrigin string, httpPort string, cb func(mux *runtime.ServeMux, opts []grpc.DialOption)) error {
 	grpcMux := runtime.NewServeMux()
-	mux := http.NewServeMux()
-	mux.Handle("/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	httpMux := http.NewServeMux()
+	httpMux.Handle("/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Access-Control-Allow-Origin", corsOrigin)
 		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE, OPTIONS")
 		w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, Authorization, ResponseType")
@@ -47,8 +47,8 @@ func RunGatewayServer(corsOrigin string, httpPort string, cb func(mux *runtime.S
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 	}
 
-	cb(mux, opts)
-	if err := http.Serve(listener, mux); err != nil {
+	cb(httpMux, opts)
+	if err := http.Serve(listener, httpMux); err != nil {
 		return err
 	}
 
