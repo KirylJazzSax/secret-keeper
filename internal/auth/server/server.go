@@ -23,7 +23,7 @@ func NewServer(application app.Application) *Server {
 }
 
 func (s *Server) LoginUser(ctx context.Context, request *auth.LoginRequest) (*auth.LoginResponse, error) {
-	payload := &command.Payload
+	payload := &command.Payload{}
 	user, err := s.application.LoginUserCommand(ctx, payload)
 
 	if err == errors.ErrNotExists {
