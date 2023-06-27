@@ -32,20 +32,20 @@ func (h *LoginUserHandler) Handle(ctx context.Context, payload Payload) error {
 	user, err := h.repo.GetUser(ctx, payload.Email)
 
 	if err == errors.ErrNotExists {
-		return nil, errors.ErrNotExists
+		return errors.ErrNotExists
 	}
 
 	if err != nil {
-		return nil, errors.ErrInternal
+		return errors.ErrInternal
 	}
 
 	if err = h.hasher.Check(payload.Password, user.Password); err != nil {
-		return nil, errors.ErrEmailOrPasswordNotValid
+		return errors.ErrEmailOrPasswordNotValid
 	}
 
 	token, p, err := h.tokenManager.CreateToken(payload.Email, h.config.AccessTokenDuration)
 	if err != nil {
-		return nil, errors.ErrInteralServer
+		return errors.ErrInteralServer
 	}
 
 	payload.AuthToken = token
