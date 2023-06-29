@@ -12,6 +12,11 @@ import (
 	"google.golang.org/grpc"
 )
 
+const (
+	GRPCType    = "grpc"
+	GatewayType = "gateway"
+)
+
 func RunGRPCServer(endpoint string, cb func(s *grpc.Server)) error {
 	grpcServer := grpc.NewServer()
 
