@@ -14,7 +14,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-func provideEnvConfig() (*utils.Config, error) {
+func provideEnvConfig(i *do.Injector) (*utils.Config, error) {
 	dur, err := time.ParseDuration(os.Getenv("ACCESS_TOKEN_DURATION"))
 	if err != nil {
 		return nil, err
