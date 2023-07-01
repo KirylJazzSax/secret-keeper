@@ -3,6 +3,7 @@ module github.com/KirylJazzSax/secret-keeper/internal/common
 go 1.20
 
 require (
+	github.com/KirylJazzSax/secret-keeper/internal/common v0.0.0-20230701213615-53dd1f027e85
 	github.com/aead/chacha20poly1305 v0.0.0-20201124145622-1a5aba2a8b29
 	github.com/golang/protobuf v1.5.3
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.16.0

@@ -82,12 +82,9 @@ func provideValidator(i *do.Injector) (validation.Validator, error) {
 
 func ProvideDeps() error {
 	do.Provide(nil, provideEnvConfig)
-	// do.Provide(nil, provideConfig(configPath))
 	do.Provide(nil, provideEncryptor)
 	do.Provide(nil, provideHasher)
 	do.Provide(nil, provideMaker)
 	do.Provide(nil, provideValidator)
-	// do.Provide(nil, provideRepository)
-	// do.Provide(nil, provideServer)
 	return nil
 }
