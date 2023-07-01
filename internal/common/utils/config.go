@@ -21,6 +21,7 @@ type Config struct {
 	DbUsername          string        `mapstructure:"MONGO_INITDB_ROOT_USERNAME"`
 	DbPassword          string        `mapstructure:"MONGO_INITDB_ROOT_PASSWORD"`
 	DbPort              string        `mapstructure:"DB_PORT"`
+	GrpcEndpoint        string        `mapstructure:"GRPC_ENDPOINT"`
 }
 
 // LoadConfig reads configuration from file or environment variables.

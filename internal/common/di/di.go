@@ -1,6 +1,9 @@
 package di
 
 import (
+	"os"
+	"time"
+
 	"github.com/KirylJazzSax/secret-keeper/internal/common/encryptor"
 	"github.com/KirylJazzSax/secret-keeper/internal/common/password"
 	"github.com/KirylJazzSax/secret-keeper/internal/common/token"
@@ -10,6 +13,25 @@ import (
 	"github.com/samber/do"
 	"github.com/spf13/viper"
 )
+
+func provideEnvConfig() (*utils.Config, error) {
+	dur, err := time.ParseDuration(os.Getenv("ACCESS_TOKEN_DURATION"))
+	if err != nil {
+		return nil, err
+	}
+	return &utils.Config{
+		HttpPort:            os.Getenv("HTTP_PORT"),
+		SymmetricKey:        os.Getenv("SYMMETRIC_KEY"),
+		SecretKey:           os.Getenv("SECRET_KEY"),
+		IV:                  os.Getenv("IV"),
+		AccessTokenDuration: dur,
+		SrvType:             os.Getenv("SERVER_TYPE"),
+		DbUsername:          os.Getenv("MONGO_INITDB_ROOT_USERNAME"),
+		DbPassword:          os.Getenv("MONGO_INITDB_ROOT_PASSWORD"),
+		DbPort:              os.Getenv("DB_PORT"),
+		GrpcEndpoint:        os.Getenv("GRPC_ENDPOINT"),
+	}, nil
+}
 
 func provideConfig(path string) func(*do.Injector) (*utils.Config, error) {
 	return func(i *do.Injector) (*utils.Config, error) {
@@ -58,8 +80,9 @@ func provideValidator(i *do.Injector) (validation.Validator, error) {
 // 	return gapi.NewServer(repo, tokenManager, config), nil
 // }
 
-func ProvideDeps(configPath string) error {
-	do.Provide(nil, provideConfig(configPath))
+func ProvideDeps() error {
+	do.Provide(nil, provideEnvConfig())
+	// do.Provide(nil, provideConfig(configPath))
 	do.Provide(nil, provideEncryptor)
 	do.Provide(nil, provideHasher)
 	do.Provide(nil, provideMaker)
