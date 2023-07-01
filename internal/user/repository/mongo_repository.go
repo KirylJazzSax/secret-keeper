@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 
+	"github.com/KirylJazzSax/secret-keeper/internal/common/db"
 	"github.com/KirylJazzSax/secret-keeper/internal/user/domain"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -19,7 +20,7 @@ func (r *MongoUserRepository) CreateUser(ctx context.Context, u *domain.User) er
 }
 
 func (r *MongoUserRepository) GetUser(ctx context.Context, email string) (*domain.User, error) {
-	coll := r.client.Database("secret-keeper").Collection("users")
+	coll := r.client.Database(db.DB).Collection(db.UsersCollection)
 	filter := bson.D{{"email", email}}
 	var user *domain.User
 
