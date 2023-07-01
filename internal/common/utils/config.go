@@ -15,9 +15,12 @@ type Config struct {
 	Port                string        `mapstructure:"PORT"`
 	IV                  string        `mapstructure:"IV"`
 	SecretKey           string        `mapstructure:"SECRET_KEY"`
-	DbUrl               string        `mapstructure:"DB_URL"`
 	HttpPort            string        `mapstructure:"HTTP_PORT"`
 	Cors                string        `mapstructure:"CORS"`
+	SrvType             string        `mapstructure:"SERVER_TYPE"`
+	DbUsername          string        `mapstructure:"MONGO_INITDB_ROOT_USERNAME"`
+	DbPassword          string        `mapstructure:"MONGO_INITDB_ROOT_PASSWORD"`
+	DbPort              string        `mapstructure:"DB_PORT"`
 }
 
 // LoadConfig reads configuration from file or environment variables.
