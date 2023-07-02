@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/KirylJazzSax/secret-keeper/internal/common/db"
 	"github.com/KirylJazzSax/secret-keeper/internal/common/di"
@@ -45,7 +44,6 @@ func main() {
 			reflection.Register(srv)
 		})
 	case commonServer.GatewayType:
-		fmt.Println("gateway")
 		commonServer.RunGatewayServer(config.Cors, config.HttpPort, func(mux *runtime.ServeMux, opts []grpc.DialOption) {
 			user.RegisterUsersServiceHandlerFromEndpoint(ctx, mux, config.GrpcEndpoint, opts)
 		})

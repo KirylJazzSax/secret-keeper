@@ -53,6 +53,7 @@ func RunGatewayServer(corsOrigin string, httpPort string, cb func(mux *runtime.S
 	}
 
 	cb(mux, opts)
+	log.Info().Msg("running http.")
 	if err := http.Serve(listener, httpMux); err != nil {
 		return err
 	}
