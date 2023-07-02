@@ -2,18 +2,18 @@ package main
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/KirylJazzSax/secret-keeper/internal/auth/app"
 	"github.com/KirylJazzSax/secret-keeper/internal/auth/server"
+	"github.com/KirylJazzSax/secret-keeper/internal/common/db"
 	"github.com/KirylJazzSax/secret-keeper/internal/common/di"
+	"github.com/KirylJazzSax/secret-keeper/internal/common/errors"
 	"github.com/KirylJazzSax/secret-keeper/internal/common/gen/auth"
 	"github.com/KirylJazzSax/secret-keeper/internal/common/password"
 	commonServer "github.com/KirylJazzSax/secret-keeper/internal/common/server"
 	"github.com/KirylJazzSax/secret-keeper/internal/common/token"
 	"github.com/KirylJazzSax/secret-keeper/internal/common/utils"
 	"github.com/KirylJazzSax/secret-keeper/internal/user/repository"
-	"github.com/boltdb/bolt"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/samber/do"
 	"google.golang.org/grpc"
@@ -21,48 +21,40 @@ import (
 )
 
 func main() {
-	di.ProvideDeps(".")
-
+	ctx := context.Background()
+	di.ProvideDeps()
 	config := do.MustInvoke[*utils.Config](nil)
-	b, err := bolt.Open(config.DbUrl, 0600, nil)
-	if err != nil {
-		panic(err)
-	}
 
-	tokenManager := do.MustInvoke[token.Maker](nil)
-	repo := repository.NewUserRepository(b)
-	hasher := do.MustInvoke[password.PassowrdHasher](nil)
-
-	application := app.NewApplication(
-		tokenManager,
-		hasher,
-		repo,
-		config,
-	)
-
-	s := server.NewServer(application)
-
-	endpoint := fmt.Sprintf(":%s", config.Port)
-
-	go commonServer.RunGRPCServer(endpoint, func(srv *grpc.Server) {
-		auth.RegisterAuthServiceServer(srv, s)
-		reflection.Register(srv)
-	})
-
-	commonServer.RunGatewayServer(config.Cors, config.HttpPort, func(mux *runtime.ServeMux, opts []grpc.DialOption) {
-		auth.RegisterAuthServiceHandlerFromEndpoint(context.Background(), mux, endpoint, opts)
-	})
-
-}
-
-func setupDb(db *bolt.DB) error {
-	return db.Update(func(tx *bolt.Tx) error {
-		_, err := tx.CreateBucketIfNotExists([]byte(repository.UsersBucket))
-
+	switch config.SrvType {
+	case commonServer.GRPCType:
+		client, err := db.NewMongodbClient(ctx, config)
 		if err != nil {
-			return fmt.Errorf("create bucket: %s", err)
+			panic(err)
 		}
+		defer client.Disconnect(ctx)
 
-		return nil
-	})
+		tokenManager := do.MustInvoke[token.Maker](nil)
+		repo := repository.NewMongoUserRepository(client)
+		hasher := do.MustInvoke[password.PassowrdHasher](nil)
+
+		application := app.NewApplication(
+			tokenManager,
+			hasher,
+			repo,
+			config,
+		)
+
+		s := server.NewServer(application)
+
+		commonServer.RunGRPCServer(config.GrpcEndpoint, func(srv *grpc.Server) {
+			auth.RegisterAuthServiceServer(srv, s)
+			reflection.Register(srv)
+		})
+	case commonServer.GatewayType:
+		commonServer.RunGatewayServer(config.Cors, config.HttpPort, func(mux *runtime.ServeMux, opts []grpc.DialOption) {
+			auth.RegisterAuthServiceHandlerFromEndpoint(context.Background(), mux, config.GrpcEndpoint, opts)
+		})
+	default:
+		panic(errors.UnknownServerType)
+	}
 }

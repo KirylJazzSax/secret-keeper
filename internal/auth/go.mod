@@ -3,9 +3,8 @@ module github.com/KirylJazzSax/secret-keeper/internal/auth
 go 1.20
 
 require (
-	github.com/KirylJazzSax/secret-keeper/internal/common v0.0.0-20230702125015-440a8f18cd9b
-	github.com/KirylJazzSax/secret-keeper/internal/user v0.0.0-20230701220720-d37f0b197a36
-	github.com/boltdb/bolt v1.3.1
+	github.com/KirylJazzSax/secret-keeper/internal/common v0.0.0-20230702142705-4841b17a6c12
+	github.com/KirylJazzSax/secret-keeper/internal/user v0.0.0-20230702144645-6f1e2d67fc57
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.16.0
 	github.com/samber/do v1.6.0
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20230629202037-9506855d4529
@@ -17,6 +16,7 @@ require (
 	github.com/aead/chacha20 v0.0.0-20180709150244-8b13a72661da // indirect
 	github.com/aead/chacha20poly1305 v0.0.0-20201124145622-1a5aba2a8b29 // indirect
 	github.com/aead/poly1305 v0.0.0-20180717145839-3fee0db0b635 // indirect
+	github.com/boltdb/bolt v1.3.1 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
