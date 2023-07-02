@@ -36,6 +36,7 @@ func (h *LoginUserHandler) Handle(ctx context.Context, payload *Payload) error {
 	}
 
 	if err != nil {
+		errors.LogErr(err)
 		return errors.ErrInteralServer
 	}
 
