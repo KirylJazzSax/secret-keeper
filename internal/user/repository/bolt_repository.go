@@ -14,11 +14,11 @@ const (
 	UsersBucket = "users"
 )
 
-type UserRepository struct {
+type BoltUserRepository struct {
 	db *bolt.DB
 }
 
-func (r *UserRepository) CreateUser(ctx context.Context, u *domain.User) error {
+func (r *BoltUserRepository) CreateUser(ctx context.Context, u *domain.User) error {
 	return r.db.Update(func(tx *bolt.Tx) error {
 		bucket := tx.Bucket([]byte(UsersBucket))
 
@@ -36,7 +36,7 @@ func (r *UserRepository) CreateUser(ctx context.Context, u *domain.User) error {
 	})
 }
 
-func (r *UserRepository) GetUser(ctx context.Context, email string) (*domain.User, error) {
+func (r *BoltUserRepository) GetUser(ctx context.Context, email string) (*domain.User, error) {
 	user := &domain.User{}
 
 	err := r.db.View(func(tx *bolt.Tx) error {
@@ -62,8 +62,8 @@ func (r *UserRepository) GetUser(ctx context.Context, email string) (*domain.Use
 	return user, nil
 }
 
-func NewUserRepository(db *bolt.DB) *UserRepository {
-	return &UserRepository{
+func NewBoltUserRepository(db *bolt.DB) *BoltUserRepository {
+	return &BoltUserRepository{
 		db: db,
 	}
 }
