@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"secret-keeper/internal/user/domain"
 
 	"github.com/KirylJazzSax/secret-keeper/internal/common/db"
 	"github.com/KirylJazzSax/secret-keeper/internal/common/errors"
@@ -26,7 +27,7 @@ func (r *MongoUserRepository) CreateUser(ctx context.Context, u *domain.User) er
 func (r *MongoUserRepository) GetUser(ctx context.Context, email string) (*domain.User, error) {
 	coll := r.client.Database(db.DB).Collection(db.UsersCollection)
 	filter := bson.D{{"email", email}}
-	var user *domain.User
+	user := &domain.User{}
 
 	err := coll.FindOne(ctx, filter).Decode(user)
 

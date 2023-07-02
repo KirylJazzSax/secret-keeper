@@ -42,6 +42,8 @@ github.com/KirylJazzSax/secret-keeper/internal/common v0.0.0-20230701213615-53dd
 github.com/KirylJazzSax/secret-keeper/internal/common v0.0.0-20230701213615-53dd1f027e85/go.mod h1:zetI7ytQHDR6W+K0fFvP6X9RiW1cO574/lJo59Z8o6M=
 github.com/KirylJazzSax/secret-keeper/internal/common v0.0.0-20230701214457-1b4267821347 h1:/XxHwxTc/ZNQfFelufu2HDt7M2gJLTlkVtVTkNrJbe8=
 github.com/KirylJazzSax/secret-keeper/internal/common v0.0.0-20230701214457-1b4267821347/go.mod h1:zetI7ytQHDR6W+K0fFvP6X9RiW1cO574/lJo59Z8o6M=
+github.com/KirylJazzSax/secret-keeper/internal/common v0.0.0-20230702125015-440a8f18cd9b h1:j9z0jAklDozKfbYVPRUQNCul8FYUtnM24wguFCZy4c4=
+github.com/KirylJazzSax/secret-keeper/internal/common v0.0.0-20230702125015-440a8f18cd9b/go.mod h1:ofPAbU9OVLlBfGND60tyZ87noQ+XdJNqV5G/dhpyX6A=
 github.com/aead/chacha20 v0.0.0-20180709150244-8b13a72661da h1:KjTM2ks9d14ZYCvmHS9iAKVt9AyzRSqNU1qabPih5BY=
 github.com/aead/chacha20 v0.0.0-20180709150244-8b13a72661da/go.mod h1:eHEWzANqSiWQsof+nXEI9bUVUyV6F53Fp89EuCh2EAA=
 github.com/aead/chacha20poly1305 v0.0.0-20170617001512-233f39982aeb/go.mod h1:UzH9IX1MMqOcwhoNOIjmTQeAxrFgzs50j4golQtXXxU=
