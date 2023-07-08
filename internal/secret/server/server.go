@@ -27,3 +27,25 @@ func (s *Server) SaveSecret(ctx context.Context, r *secret.SaveSecretRequest) (*
 		},
 	}, nil
 }
+
+func (s *Server) SecretsList(ctx context.Context, r *secret.SecretsListRequest) (*secret.SecretsListResponse, error) {
+	return &secret.SecretsListRequest{}, nil
+}
+
+func (s *Server) ShowSecret(ctx context.Context, r *secret.ShowSecretRequest) (*secret.ShowSecretResponse, error) {
+	return &secret.ShowSecretResponse{
+		Secret: &secret.Secret{
+			Id:    0,
+			Title: "",
+			Body:  "",
+		},
+	}, nil
+}
+
+func (s *Server) DeleteSecret(ctx context.Context, r *secret.DeleteSecreteRequest) (*secret.DeleteSecretResponse, error) {
+	return &secret.DeleteSecretResponse{}, nil
+}
+
+func (s *Server) DeleteAllSecrets(ctx context.Context, r *secret.DeleteAllSecretsRequest) (*secret.DeleteAllSecretsResponse, error) {
+	return &secret.DeleteAllSecretsResponse{}, nil
+}
