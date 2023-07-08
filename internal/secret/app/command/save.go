@@ -14,7 +14,7 @@ type SaveHandlerType common.CommandHandler[*Payload]
 type SaveHandler struct {
 }
 
-func (h *SaveHandlerType) Handle(ctx context.Context, p *Payload) error {
+func (h *SaveHandler) Handle(ctx context.Context, p *Payload) error {
 	return nil
 }
 
