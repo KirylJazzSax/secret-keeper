@@ -17,8 +17,8 @@ const (
 	GatewayType = "gateway"
 )
 
-func RunGRPCServer(endpoint string, cb func(s *grpc.Server)) error {
-	grpcServer := grpc.NewServer()
+func RunGRPCServer(endpoint string, opts []grpc.ServerOption, cb func(s *grpc.Server)) error {
+	grpcServer := grpc.NewServer(opts)
 
 	listener, err := net.Listen("tcp", endpoint)
 	if err != nil {
