@@ -2,11 +2,10 @@ package server
 
 import (
 	"context"
-	"go/token"
 
 	"github.com/KirylJazzSax/secret-keeper/internal/common/errors"
 	"github.com/KirylJazzSax/secret-keeper/internal/common/gen/secret"
-	"github.com/KirylJazzSax/secret-keeper/internal/common/token"
+	tokenMaker "github.com/KirylJazzSax/secret-keeper/internal/common/token"
 	"github.com/KirylJazzSax/secret-keeper/internal/secret/app"
 	"github.com/KirylJazzSax/secret-keeper/internal/secret/app/command"
 	"github.com/KirylJazzSax/secret-keeper/internal/secret/domain"
@@ -24,7 +23,7 @@ func NewServer(application *app.Application) *Server {
 }
 
 func (s *Server) SaveSecret(ctx context.Context, r *secret.SaveSecretRequest) (*secret.SaveSecretResponse, error) {
-	u := ctx.Value("user").(*token.Payload)
+	u := ctx.Value("user").(*tokenMaker.Payload)
 
 	p := &command.SavePayload{
 		Title:  r.Title,
