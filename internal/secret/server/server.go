@@ -2,9 +2,14 @@ package server
 
 import (
 	"context"
+	"go/token"
 
+	"github.com/KirylJazzSax/secret-keeper/internal/common/errors"
 	"github.com/KirylJazzSax/secret-keeper/internal/common/gen/secret"
+	"github.com/KirylJazzSax/secret-keeper/internal/common/token"
 	"github.com/KirylJazzSax/secret-keeper/internal/secret/app"
+	"github.com/KirylJazzSax/secret-keeper/internal/secret/app/command"
+	"github.com/KirylJazzSax/secret-keeper/internal/secret/domain"
 )
 
 type Server struct {
@@ -19,12 +24,20 @@ func NewServer(application *app.Application) *Server {
 }
 
 func (s *Server) SaveSecret(ctx context.Context, r *secret.SaveSecretRequest) (*secret.SaveSecretResponse, error) {
+	u := ctx.Value("user").(*token.Payload)
+
+	p := &command.SavePayload{
+		Title:  r.Title,
+		Body:   r.Body,
+		Email:  u.Email,
+		Secret: &domain.Secret{},
+	}
+	if err := s.application.Commands.Save.Handle(ctx, p); err != nil {
+		return nil, errors.LogErrAndCreateInternal(err)
+	}
+
 	return &secret.SaveSecretResponse{
-		Secret: &secret.Secret{
-			Id:    0,
-			Title: "",
-			Body:  "",
-		},
+		Secret: p.Secret,
 	}, nil
 }
 

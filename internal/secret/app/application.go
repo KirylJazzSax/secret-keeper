@@ -1,7 +1,9 @@
 package app
 
 import (
+	"github.com/KirylJazzSax/secret-keeper/internal/common/encryptor"
 	"github.com/KirylJazzSax/secret-keeper/internal/secret/app/command"
+	"github.com/KirylJazzSax/secret-keeper/internal/secret/domain"
 )
 
 type Commands struct {
@@ -12,10 +14,10 @@ type Application struct {
 	Commands Commands
 }
 
-func NewApplication() *Application {
+func NewApplication(encr encryptor.Encryptor, repo domain.Repository) *Application {
 	return &Application{
 		Commands: Commands{
-			Save: command.NewSaveHandler(),
+			Save: command.NewSaveHandler(encr, repo),
 		},
 	}
 }
