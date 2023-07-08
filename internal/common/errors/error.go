@@ -15,6 +15,7 @@ var ErrEmailOrPasswordNotValid = errors.New("email or password not valid.")
 var ErrInteralServer = errors.New("internal error.")
 var UnknownServerType = errors.New("unknown server type.")
 
+// TODO move logs to middleware
 func InvalidArgumentError(violations []*errdetails.BadRequest_FieldViolation) error {
 	badRequest := &errdetails.BadRequest{FieldViolations: violations}
 	statusInvalid := status.New(codes.InvalidArgument, "invalid parameters.")
