@@ -8,7 +8,7 @@ import (
 )
 
 type Server struct {
-	secret.UnimplementedUsersServiceServer
+	secret.UnimplementedSecretKeeperServer
 	application *app.Application
 }
 
