@@ -29,7 +29,7 @@ func (s *Server) SaveSecret(ctx context.Context, r *secret.SaveSecretRequest) (*
 }
 
 func (s *Server) SecretsList(ctx context.Context, r *secret.SecretsListRequest) (*secret.SecretsListResponse, error) {
-	return &secret.SecretsListRequest{}, nil
+	return &secret.SecretsListResponse{}, nil
 }
 
 func (s *Server) ShowSecret(ctx context.Context, r *secret.ShowSecretRequest) (*secret.ShowSecretResponse, error) {
@@ -42,7 +42,7 @@ func (s *Server) ShowSecret(ctx context.Context, r *secret.ShowSecretRequest) (*
 	}, nil
 }
 
-func (s *Server) DeleteSecret(ctx context.Context, r *secret.DeleteSecreteRequest) (*secret.DeleteSecretResponse, error) {
+func (s *Server) DeleteSecret(ctx context.Context, r *secret.DeleteSecretRequest) (*secret.DeleteSecretResponse, error) {
 	return &secret.DeleteSecretResponse{}, nil
 }
 
