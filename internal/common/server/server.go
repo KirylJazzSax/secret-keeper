@@ -18,7 +18,7 @@ const (
 )
 
 func RunGRPCServer(endpoint string, opts []grpc.ServerOption, cb func(s *grpc.Server)) error {
-	grpcServer := grpc.NewServer(opts)
+	grpcServer := grpc.NewServer(opts...)
 
 	listener, err := net.Listen("tcp", endpoint)
 	if err != nil {
