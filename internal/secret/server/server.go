@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/KirylJazzSax/secret-keeper/internal/common/errors"
 	"github.com/KirylJazzSax/secret-keeper/internal/common/gen/secret"
@@ -35,8 +36,12 @@ func (s *Server) SaveSecret(ctx context.Context, r *secret.SaveSecretRequest) (*
 		return nil, errors.LogErrAndCreateInternal(err)
 	}
 
+	fmt.Println(p.Secret)
 	return &secret.SaveSecretResponse{
-		Secret: p.Secret,
+		Secret: &secret.Secret{
+			Title: p.Secret.Title,
+			Body:  p.Secret.Body,
+		},
 	}, nil
 }
 
