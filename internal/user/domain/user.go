@@ -1,11 +1,13 @@
 package domain
 
-import "time"
+import (
+	"time"
+)
 
 type User struct {
-	Email     string
-	CreatedAt time.Time
-	Password  string
+	Email     string    `bson:"email"`
+	CreatedAt time.Time `bson:"created_at"`
+	Password  string    `bson:"password"`
 }
 
 func NewUser(email string, createdAt time.Time, password string) *User {

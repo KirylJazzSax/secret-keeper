@@ -39,7 +39,7 @@ func main() {
 
 		a := app.NewApplication(validator, hasher, repo)
 		s := server.NewServer(a)
-		commonServer.RunGRPCServer(config.GrpcEndpoint, func(srv *grpc.Server) {
+		commonServer.RunGRPCServer(config.GrpcEndpoint, []grpc.ServerOption{}, func(srv *grpc.Server) {
 			user.RegisterUsersServiceServer(srv, s)
 			reflection.Register(srv)
 		})
