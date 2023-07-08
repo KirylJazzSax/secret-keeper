@@ -26,10 +26,10 @@ func (r *MongoRepository) CreateSecret(ctx context.Context, s *domain.Secret) er
 	return nil
 }
 func (r *MongoRepository) SecretsList(ctx context.Context, email string) ([]*domain.Secret, error) {
-	return []*domain.Secret{}
+	return []*domain.Secret{}, nil
 }
 func (r *MongoRepository) GetSecret(ctx context.Context, id uint64, email string) (*domain.Secret, error) {
-	return &domain.Secret{}
+	return &domain.Secret{}, nil
 }
 func (r *MongoRepository) DeleteSecret(ctx context.Context, id uint64, email string) error {
 	return nil

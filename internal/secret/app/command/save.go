@@ -32,10 +32,10 @@ func (h *SaveHandler) Handle(ctx context.Context, p *SavePayload) error {
 
 	var encoded string
 	if err := h.encr.Encrypt(p.Body, &encoded); err != nil {
-		return nil, err
+		return err
 	}
 
-	s := domain.NewSecret(p.Title, encoded, u)
+	s := domain.NewSecret(p.Title, encoded, *u)
 
 	if err := h.repo.CreateSecret(ctx, s); err != nil {
 		return err
