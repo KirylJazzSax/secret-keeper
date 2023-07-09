@@ -48,7 +48,8 @@ func (h *SaveHandler) Handle(ctx context.Context, p *SavePayload) error {
 
 func NewSaveHandler(encr encryptor.Encryptor, repo domain.Repository, userRepo userDomain.Repository) *SaveHandler {
 	return &SaveHandler{
-		encr: encr,
-		repo: repo,
+		encr:     encr,
+		repo:     repo,
+		userRepo: userRepo,
 	}
 }
