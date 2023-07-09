@@ -5,6 +5,7 @@ import (
 )
 
 type User struct {
+	Id        int64
 	Email     string    `bson:"email"`
 	CreatedAt time.Time `bson:"created_at"`
 	Password  string    `bson:"password"`
