@@ -2,7 +2,7 @@ package repository
 
 import (
 	"context"
-	"strconv"
+	"math/big"
 	"time"
 
 	"github.com/KirylJazzSax/secret-keeper/internal/common/db"
@@ -45,10 +45,11 @@ func (r *MongoUserRepository) GetUser(ctx context.Context, email string) (*domai
 		return nil, err
 	}
 
-	id, err := strconv.ParseInt(user.Id.Hex(), 16, 64)
+	n := new(big.Int)
+	id, err := n.SetString(user.Id.Hex(), 16)
 
 	u := &domain.User{
-		Id:        id,
+		Id:        id.Int64(),
 		Email:     user.Email,
 		CreatedAt: user.CreatedAt,
 	}
