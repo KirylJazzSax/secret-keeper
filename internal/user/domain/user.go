@@ -6,9 +6,9 @@ import (
 
 type User struct {
 	Id        int64
-	Email     string    `bson:"email"`
-	CreatedAt time.Time `bson:"created_at"`
-	Password  string    `bson:"password"`
+	Email     string
+	CreatedAt time.Time
+	Password  string
 }
 
 func NewUser(email string, createdAt time.Time, password string) *User {

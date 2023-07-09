@@ -2,7 +2,6 @@ package repository
 
 import (
 	"context"
-	"math/big"
 	"time"
 
 	"github.com/KirylJazzSax/secret-keeper/internal/common/db"
@@ -10,15 +9,14 @@ import (
 	"github.com/KirylJazzSax/secret-keeper/internal/user/domain"
 
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type UserDto struct {
-	Id        primitive.ObjectID `bson:"_id"`
-	Email     string             `bson:"email"`
-	CreatedAt time.Time          `bson:"created_at"`
-	Password  string             `bson:"password"`
+	Id        int64     `bson:"_id"`
+	Email     string    `bson:"email"`
+	CreatedAt time.Time `bson:"created_at"`
+	Password  string    `bson:"password"`
 }
 
 type MongoUserRepository struct {
@@ -45,11 +43,11 @@ func (r *MongoUserRepository) GetUser(ctx context.Context, email string) (*domai
 		return nil, err
 	}
 
-	n := new(big.Int)
-	id, _ := n.SetString(user.Id.Hex(), 16)
+	// n := new(big.Int)
+	// id, _ := n.SetString(user.Id.Hex(), 16)
 
 	u := &domain.User{
-		Id:        id.Int64(),
+		Id:        user.Id,
 		Email:     user.Email,
 		CreatedAt: user.CreatedAt,
 	}
