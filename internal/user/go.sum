@@ -42,6 +42,12 @@ github.com/KirylJazzSax/secret-keeper/internal/common v0.0.0-20230702142705-4841
 github.com/KirylJazzSax/secret-keeper/internal/common v0.0.0-20230702142705-4841b17a6c12/go.mod h1:ofPAbU9OVLlBfGND60tyZ87noQ+XdJNqV5G/dhpyX6A=
 github.com/KirylJazzSax/secret-keeper/internal/common v0.0.0-20230708213830-a4f241f23e1e h1:E0qxzloXW+niTTtZb1bJ44FhTUEdbShi4O2g7xjrrGQ=
 github.com/KirylJazzSax/secret-keeper/internal/common v0.0.0-20230708213830-a4f241f23e1e/go.mod h1:iOavHX3m9rijO2fpSeBDXtmKnbqR/ByJosQhECb3tJI=
+github.com/KirylJazzSax/secret-keeper/internal/common v0.0.0-20230709122708-5f0b5ffb3a2d h1:JCVi0nIpm9J1DZ3ZM4YVpx1AWwQT2X3TbsbiUHx881w=
+github.com/KirylJazzSax/secret-keeper/internal/common v0.0.0-20230709122708-5f0b5ffb3a2d/go.mod h1:iOavHX3m9rijO2fpSeBDXtmKnbqR/ByJosQhECb3tJI=
+github.com/KirylJazzSax/secret-keeper/internal/common v0.0.0-20230709130002-43cb49a3a0c4 h1:2J0JwFvVN2UvjrTvTsi1q2gMhno566i76K/2n134dQs=
+github.com/KirylJazzSax/secret-keeper/internal/common v0.0.0-20230709130002-43cb49a3a0c4/go.mod h1:iOavHX3m9rijO2fpSeBDXtmKnbqR/ByJosQhECb3tJI=
+github.com/KirylJazzSax/secret-keeper/internal/secret v0.0.0-20230709134813-be0ff9fdb5a7 h1:2kQu9XlKoqaur/0SIyiXBl+t1A/UJML5huA/lPHq3/g=
+github.com/KirylJazzSax/secret-keeper/internal/secret v0.0.0-20230709134813-be0ff9fdb5a7/go.mod h1:XZbLqpH/veFY04Zzgn7V3SdWLNQec7FmLdnftcxh/EM=
 github.com/aead/chacha20 v0.0.0-20180709150244-8b13a72661da h1:KjTM2ks9d14ZYCvmHS9iAKVt9AyzRSqNU1qabPih5BY=
 github.com/aead/chacha20 v0.0.0-20180709150244-8b13a72661da/go.mod h1:eHEWzANqSiWQsof+nXEI9bUVUyV6F53Fp89EuCh2EAA=
 github.com/aead/chacha20poly1305 v0.0.0-20170617001512-233f39982aeb/go.mod h1:UzH9IX1MMqOcwhoNOIjmTQeAxrFgzs50j4golQtXXxU=

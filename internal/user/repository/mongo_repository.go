@@ -46,7 +46,7 @@ func (r *MongoUserRepository) GetUser(ctx context.Context, email string) (*domai
 	}
 
 	n := new(big.Int)
-	id, err := n.SetString(user.Id.Hex(), 16)
+	id, _ := n.SetString(user.Id.Hex(), 16)
 
 	u := &domain.User{
 		Id:        id.Int64(),

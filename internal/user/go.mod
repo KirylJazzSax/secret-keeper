@@ -3,7 +3,7 @@ module github.com/KirylJazzSax/secret-keeper/internal/user
 go 1.20
 
 require (
-	github.com/KirylJazzSax/secret-keeper/internal/common v0.0.0-20230708213830-a4f241f23e1e
+	github.com/KirylJazzSax/secret-keeper/internal/common v0.0.0-20230709130002-43cb49a3a0c4
 	github.com/boltdb/bolt v1.3.1
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.16.0
 	github.com/samber/do v1.6.0
@@ -14,6 +14,7 @@ require (
 )
 
 require (
+	github.com/KirylJazzSax/secret-keeper/internal/secret v0.0.0-20230709134813-be0ff9fdb5a7 // indirect
 	github.com/aead/chacha20 v0.0.0-20180709150244-8b13a72661da // indirect
 	github.com/aead/chacha20poly1305 v0.0.0-20201124145622-1a5aba2a8b29 // indirect
 	github.com/aead/poly1305 v0.0.0-20180717145839-3fee0db0b635 // indirect
