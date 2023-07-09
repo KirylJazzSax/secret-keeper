@@ -5,9 +5,10 @@ import (
 )
 
 type Secret struct {
-	Title string          `bson:"title"`
-	Body  string          `bson:"body"`
-	User  userDomain.User `bson:"inline"`
+	Id    int64
+	Title string
+	Body  string
+	User  userDomain.User
 }
 
 func NewSecret(title string, body string, user userDomain.User) *Secret {
