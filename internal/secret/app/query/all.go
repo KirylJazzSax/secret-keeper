@@ -3,7 +3,7 @@ package query
 import (
 	"context"
 
-	"github.com/KirylJazzSax/secret-keeper/internal/secret/common"
+	"github.com/KirylJazzSax/secret-keeper/internal/common"
 	"github.com/KirylJazzSax/secret-keeper/internal/secret/domain"
 )
 
