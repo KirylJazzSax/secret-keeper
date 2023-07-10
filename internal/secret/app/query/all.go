@@ -11,7 +11,7 @@ type AllPayload struct {
 	UserId string
 }
 
-type AllQueryHanlderType common.QueryHandler[AllPayload, []*domain.Secret]
+type AllQueryHanlderType common.QueryHandler[*AllPayload, []*domain.Secret]
 
 type AllQueryHanlder struct {
 	repo domain.Repository
