@@ -1,17 +1,17 @@
 package domain
 
 import (
-	userDomain "github.com/KirylJazzSax/secret-keeper/internal/user/domain"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type Secret struct {
-	Id    int64
-	Title string
-	Body  string
-	User  userDomain.User
+	Id    primitive.ObjectID `bson:"_id"`
+	Title string             `bson:"title"`
+	Body  string             `bson:"body"`
+	User  primitive.ObjectID `bson:"user"`
 }
 
-func NewSecret(title string, body string, user userDomain.User) *Secret {
+func NewSecret(title string, body string, user primitive.ObjectID) *Secret {
 	return &Secret{
 		Title: title,
 		Body:  body,
