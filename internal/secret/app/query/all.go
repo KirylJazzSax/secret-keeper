@@ -23,6 +23,6 @@ func NewAllQueryHandler(repo domain.Repository) *AllQueryHanlder {
 	}
 }
 
-func (h *AllQueryHanlder) Handle(ctx context.Context, p *AllPayload) ([]*domain.Secret, error) {
+func (h *AllQueryHanlder) Query(ctx context.Context, p *AllPayload) ([]*domain.Secret, error) {
 	return h.repo.SecretsList(ctx, p.UserId)
 }
