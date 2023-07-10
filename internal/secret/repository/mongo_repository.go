@@ -2,11 +2,9 @@ package repository
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/KirylJazzSax/secret-keeper/internal/common/db"
 	"github.com/KirylJazzSax/secret-keeper/internal/secret/domain"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -21,14 +19,8 @@ func NewMongoRepository(client *mongo.Client) *MongoRepository {
 }
 
 func (r *MongoRepository) CreateSecret(ctx context.Context, s *domain.Secret) error {
-	userId, err := primitive.ObjectIDFromHex(fmt.Sprintf("%x", s.User.Id))
-
 	coll := r.client.Database(db.DB).Collection(db.SecretsCollection)
-	if _, err := coll.InsertOne(ctx, &SecretDto{
-		Title: s.Title,
-		Body:  s.Body,
-		User:  s.User.Id,
-	}); err != nil {
+	if _, err := coll.InsertOne(ctx, s); err != nil {
 		return err
 	}
 	return nil
