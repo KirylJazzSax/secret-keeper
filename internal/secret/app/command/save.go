@@ -35,7 +35,7 @@ func (h *SaveHandler) Handle(ctx context.Context, p *SavePayload) error {
 		return err
 	}
 
-	s := domain.NewSecret(p.Title, encoded, *u.Id)
+	s := domain.NewSecret(p.Title, encoded, u.Id)
 
 	if err := h.repo.CreateSecret(ctx, s); err != nil {
 		return err
