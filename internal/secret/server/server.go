@@ -37,6 +37,7 @@ func (s *Server) SaveSecret(ctx context.Context, r *secret.SaveSecretRequest) (*
 
 	return &secret.SaveSecretResponse{
 		Secret: &secret.Secret{
+			Id:    p.Secret.Id,
 			Title: p.Secret.Title,
 			Body:  p.Secret.Body,
 		},
@@ -44,7 +45,16 @@ func (s *Server) SaveSecret(ctx context.Context, r *secret.SaveSecretRequest) (*
 }
 
 func (s *Server) SecretsList(ctx context.Context, r *secret.SecretsListRequest) (*secret.SecretsListResponse, error) {
-	return &secret.SecretsListResponse{}, nil
+	u := ctx.Value("user").(*tokenMaker.Payload)
+
+	secrets, err := s.application.Queries.All.Query(ctx, u.Id)
+	if err != nil {
+		return nil, errors.LogErrAndCreateInternal(err)
+	}
+
+	return &secret.SecretsListResponse{
+		Secrets: secrets,
+	}, nil
 }
 
 func (s *Server) ShowSecret(ctx context.Context, r *secret.ShowSecretRequest) (*secret.ShowSecretResponse, error) {
