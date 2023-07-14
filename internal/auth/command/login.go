@@ -44,7 +44,7 @@ func (h *LoginUserHandler) Handle(ctx context.Context, payload *Payload) error {
 		return errors.ErrEmailOrPasswordNotValid
 	}
 
-	token, p, err := h.tokenManager.CreateToken(payload.Email, h.config.AccessTokenDuration)
+	token, p, err := h.tokenManager.CreateToken(user.Id.String(), payload.Email, h.config.AccessTokenDuration)
 	if err != nil {
 		return errors.ErrInteralServer
 	}
