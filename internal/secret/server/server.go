@@ -8,6 +8,7 @@ import (
 	tokenMaker "github.com/KirylJazzSax/secret-keeper/internal/common/token"
 	"github.com/KirylJazzSax/secret-keeper/internal/secret/app"
 	"github.com/KirylJazzSax/secret-keeper/internal/secret/app/command"
+	"github.com/KirylJazzSax/secret-keeper/internal/secret/app/query"
 	"github.com/KirylJazzSax/secret-keeper/internal/secret/domain"
 )
 
@@ -37,7 +38,7 @@ func (s *Server) SaveSecret(ctx context.Context, r *secret.SaveSecretRequest) (*
 
 	return &secret.SaveSecretResponse{
 		Secret: &secret.Secret{
-			Id:    p.Secret.Id,
+			Id:    p.Secret.Id.String(),
 			Title: p.Secret.Title,
 			Body:  p.Secret.Body,
 		},
@@ -47,20 +48,33 @@ func (s *Server) SaveSecret(ctx context.Context, r *secret.SaveSecretRequest) (*
 func (s *Server) SecretsList(ctx context.Context, r *secret.SecretsListRequest) (*secret.SecretsListResponse, error) {
 	u := ctx.Value("user").(*tokenMaker.Payload)
 
-	secrets, err := s.application.Queries.All.Query(ctx, u.Id)
+	p := &query.AllPayload{
+		UserId: u.Id,
+	}
+
+	secrets, err := s.application.Queries.All.Query(ctx, p)
 	if err != nil {
 		return nil, errors.LogErrAndCreateInternal(err)
 	}
 
+	resSecrets := make([]*secret.Secret, len(secrets))
+	for i, s := range secrets {
+		resSecrets[i] = &secrets.Secret{
+			Id:    s.Id,
+			Title: s.Title,
+			Body:  s.Body,
+		}
+	}
+
 	return &secret.SecretsListResponse{
-		Secrets: secrets,
+		Secrets: resSecrets,
 	}, nil
 }
 
 func (s *Server) ShowSecret(ctx context.Context, r *secret.ShowSecretRequest) (*secret.ShowSecretResponse, error) {
 	return &secret.ShowSecretResponse{
 		Secret: &secret.Secret{
-			Id:    0,
+			Id:    "",
 			Title: "",
 			Body:  "",
 		},
