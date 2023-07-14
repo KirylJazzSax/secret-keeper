@@ -60,7 +60,7 @@ func (s *Server) SecretsList(ctx context.Context, r *secret.SecretsListRequest) 
 	resSecrets := make([]*secret.Secret, len(secrets))
 	for i, s := range secrets {
 		resSecrets[i] = &secret.Secret{
-			Id:    s.Id,
+			Id:    s.Id.String(),
 			Title: s.Title,
 			Body:  s.Body,
 		}
