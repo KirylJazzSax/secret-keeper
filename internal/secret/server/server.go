@@ -85,7 +85,7 @@ func (s *Server) ShowSecret(ctx context.Context, r *secret.ShowSecretRequest) (*
 
 	return &secret.ShowSecretResponse{
 		Secret: &secret.Secret{
-			Id:    p.Decoded.Id,
+			Id:    p.Decoded.Id.Hex(),
 			Title: p.Decoded.Title,
 			Body:  p.Decoded.Body,
 		},
