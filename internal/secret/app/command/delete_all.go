@@ -21,7 +21,7 @@ func (h *DeleteAllHandler) Handle(ctx context.Context, p *DeleteAllPayload) erro
 	return h.repo.DeleteAllSecrets(ctx, p.UserId)
 }
 
-func NewDeleteHandler(repo domain.Repository) *DeleteAllHandler {
+func NewDeleteAllHandler(repo domain.Repository) *DeleteAllHandler {
 	return &DeleteAllHandler{
 		repo: repo,
 	}
