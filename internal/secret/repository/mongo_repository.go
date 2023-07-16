@@ -2,7 +2,6 @@ package repository
 
 import (
 	"context"
-	"secret-keeper/internal/secret/domain"
 
 	"github.com/KirylJazzSax/secret-keeper/internal/common/db"
 	"github.com/KirylJazzSax/secret-keeper/internal/secret/domain"
