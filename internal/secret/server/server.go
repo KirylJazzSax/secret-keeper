@@ -93,8 +93,11 @@ func (s *Server) ShowSecret(ctx context.Context, r *secret.ShowSecretRequest) (*
 }
 
 func (s *Server) DeleteSecret(ctx context.Context, r *secret.DeleteSecretRequest) (*secret.DeleteSecretResponse, error) {
+	u := ctx.Value("user").(*tokenMaker.Payload)
+
 	p := &command.DeletePayload{
-		Id: r.Id,
+		Id:     r.Id,
+		UserId: u.Id,
 	}
 
 	if err := *s.application.Commands.Delete.Handle(ctx, p); err != nil {

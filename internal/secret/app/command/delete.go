@@ -8,7 +8,8 @@ import (
 )
 
 type DeletePayload struct {
-	Id string
+	Id     string
+	UserId string
 }
 
 type DeleteHandlerType common.CommandHandler[*DeletePayload]
@@ -18,7 +19,7 @@ type DeleteHandler struct {
 }
 
 func (h *DeleteHandler) Handle(ctx context.Context, p *DeletePayload) error {
-	return h.repo.DeleteSecret(ctx, p.Id)
+	return h.repo.DeleteSecret(ctx, p.Id, p.UserId)
 }
 
 func NewDeleteHandler(repo domain.Repository) *DeleteHandler {
