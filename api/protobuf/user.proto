@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package user;
+
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/KirylJazzSax/secret-keeper/internal/common/gen/user";
+
+message User {
+    string id = 1;
+    string email = 2;
+    google.protobuf.Timestamp created_at = 3;
+}
+
+message CreateUserRequest {
+    string email = 1;
+    string password = 2;
+}
+
+message CreateUserResponse {
+    User user = 1;
+}
+
+message GetUserDataRequest {}
+
+message GetUserDataResponse {
+    User user = 1;
+}
+
+service UsersService {
+    rpc CreateUser(CreateUserRequest) returns (CreateUserResponse) {
+        option (google.api.http) = {
+            post: "/v1/user"
+            body: "*"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+			description: "Add new user";
+			summary: "Add new user";
+        };
+    }
+}

@@ -15,14 +15,16 @@ var (
 
 // Payload contains the payload data of the token
 type Payload struct {
+	Id        string                `json:"id"`
 	Email     string                `json:"email"`
 	IssuedAt  timestamppb.Timestamp `json:"issued_at"`
 	ExpiredAt timestamppb.Timestamp `json:"expired_at"`
 }
 
 // NewPayload creates a new token payload with a specific username and duration
-func NewPayload(email string, duration time.Duration) (*Payload, error) {
+func NewPayload(id string, email string, duration time.Duration) (*Payload, error) {
 	payload := &Payload{
+		Id:        id,
 		Email:     email,
 		IssuedAt:  *timestamppb.Now(),
 		ExpiredAt: *timestamppb.New(time.Now().Add(duration)),

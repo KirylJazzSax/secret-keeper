@@ -7,6 +7,7 @@ import (
 	"github.com/KirylJazzSax/secret-keeper/internal/common/encryptor"
 	"github.com/KirylJazzSax/secret-keeper/internal/secret/domain"
 	userDomain "github.com/KirylJazzSax/secret-keeper/internal/user/domain"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type SavePayload struct {
@@ -35,7 +36,8 @@ func (h *SaveHandler) Handle(ctx context.Context, p *SavePayload) error {
 		return err
 	}
 
-	s := domain.NewSecret(p.Title, encoded, *u)
+	s := domain.NewSecret(p.Title, encoded, u.Id)
+	s.Id = primitive.NewObjectID()
 
 	if err := h.repo.CreateSecret(ctx, s); err != nil {
 		return err
