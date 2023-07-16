@@ -40,8 +40,8 @@ github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
 github.com/KirylJazzSax/secret-keeper/internal/common v0.0.0-20230714221300-d7ba4fdc9ebb h1:Tme0+Lg11WS+sK7qn6CdfC/3pYbd6kGskJZOPqwragc=
 github.com/KirylJazzSax/secret-keeper/internal/common v0.0.0-20230714221300-d7ba4fdc9ebb/go.mod h1:iOavHX3m9rijO2fpSeBDXtmKnbqR/ByJosQhECb3tJI=
-github.com/KirylJazzSax/secret-keeper/internal/user v0.0.0-20230714221300-d7ba4fdc9ebb h1:64POEnp0t+r0tsZbDARaEjLDNfypy4AGZSxltv0pYjg=
-github.com/KirylJazzSax/secret-keeper/internal/user v0.0.0-20230714221300-d7ba4fdc9ebb/go.mod h1:PAtXURCEgjO0Mr3jFiFXKc7wKTyl49S2HW94Hv+mZyM=
+github.com/KirylJazzSax/secret-keeper/internal/user v0.0.0-20230716191727-f1e353abb4d7 h1:vTpbvvw9tEpK4+ykduCm4f7H7GX6S4H2iWIN0LYFhMY=
+github.com/KirylJazzSax/secret-keeper/internal/user v0.0.0-20230716191727-f1e353abb4d7/go.mod h1:IjUo9AhFYgUv7rAeK4SMKCsaMO7A8WvB4xIHeOB6I58=
 github.com/aead/chacha20 v0.0.0-20180709150244-8b13a72661da h1:KjTM2ks9d14ZYCvmHS9iAKVt9AyzRSqNU1qabPih5BY=
 github.com/aead/chacha20 v0.0.0-20180709150244-8b13a72661da/go.mod h1:eHEWzANqSiWQsof+nXEI9bUVUyV6F53Fp89EuCh2EAA=
 github.com/aead/chacha20poly1305 v0.0.0-20170617001512-233f39982aeb/go.mod h1:UzH9IX1MMqOcwhoNOIjmTQeAxrFgzs50j4golQtXXxU=

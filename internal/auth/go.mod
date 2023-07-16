@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/KirylJazzSax/secret-keeper/internal/common v0.0.0-20230714221300-d7ba4fdc9ebb
-	github.com/KirylJazzSax/secret-keeper/internal/user v0.0.0-20230714221300-d7ba4fdc9ebb
+	github.com/KirylJazzSax/secret-keeper/internal/user v0.0.0-20230716191727-f1e353abb4d7
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.16.0
 	github.com/samber/do v1.6.0
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20230711160842-782d3b101e98

@@ -14,8 +14,6 @@ require (
 )
 
 require (
-	github.com/KirylJazzSax/secret-keeper/internal/auth v0.0.0-20230716144804-0301b31a5c8e // indirect
-	github.com/KirylJazzSax/secret-keeper/internal/secret v0.0.0-20230716190735-4bedc78bb413 // indirect
 	github.com/aead/chacha20 v0.0.0-20180709150244-8b13a72661da // indirect
 	github.com/aead/chacha20poly1305 v0.0.0-20201124145622-1a5aba2a8b29 // indirect
 	github.com/aead/poly1305 v0.0.0-20180717145839-3fee0db0b635 // indirect
