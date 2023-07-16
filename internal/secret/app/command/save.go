@@ -37,7 +37,7 @@ func (h *SaveHandler) Handle(ctx context.Context, p *SavePayload) error {
 	}
 
 	s := domain.NewSecret(p.Title, encoded, u.Id)
-	s.Id = primitive.NewObjectId()
+	s.Id = primitive.NewObjectID()
 
 	if err := h.repo.CreateSecret(ctx, s); err != nil {
 		return err
