@@ -2,7 +2,6 @@ package server
 
 import (
 	"context"
-	"secret-keeper/internal/secret/app/command"
 
 	"github.com/KirylJazzSax/secret-keeper/internal/common/errors"
 	"github.com/KirylJazzSax/secret-keeper/internal/common/gen/secret"
