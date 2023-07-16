@@ -5,6 +5,7 @@ import (
 
 	"github.com/KirylJazzSax/secret-keeper/internal/common/db"
 	"github.com/KirylJazzSax/secret-keeper/internal/secret/domain"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -25,7 +26,13 @@ func (r *MongoRepository) CreateSecret(ctx context.Context, s *domain.Secret) er
 	}
 	return nil
 }
-func (r *MongoRepository) SecretsList(ctx context.Context, email string) ([]*domain.Secret, error) {
+func (r *MongoRepository) SecretsList(ctx context.Context, userId string) ([]*domain.Secret, error) {
+	coll := r.client.Database(db.DB).Collection(db.SecretsCollection)
+	id, err := primitive.ObjectIDFromHex(userId)
+	if err != nil {
+		return nil, err
+	}
+	coll.Find(ctx, bson.M{{"user", id}})
 	return []*domain.Secret{}, nil
 }
 func (r *MongoRepository) GetSecret(ctx context.Context, id uint64, email string) (*domain.Secret, error) {
