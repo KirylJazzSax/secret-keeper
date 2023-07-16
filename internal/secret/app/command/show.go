@@ -2,6 +2,7 @@ package command
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/KirylJazzSax/secret-keeper/internal/common"
 	"github.com/KirylJazzSax/secret-keeper/internal/common/encryptor"
@@ -32,6 +33,7 @@ func (h *ShowHandler) Handle(ctx context.Context, p *ShowPayload) error {
 		return err
 	}
 
+	fmt.Println(u.Id.Hex(), p.Id)
 	s, err := h.repo.GetSecret(ctx, p.Id, u.Id.Hex())
 	if err != nil {
 		return err
