@@ -29,7 +29,7 @@ type ShowHandler struct {
 
 func (h *ShowHandler) Handle(ctx context.Context, p *ShowPayload) error {
 	u, err := h.userRepo.GetUser(ctx, p.Email)
-	fmt.Println(u.Id.Hex(), p.Id, p.Email)
+	fmt.Println(p.Id, p.Email)
 	if err != nil {
 		return err
 	}
