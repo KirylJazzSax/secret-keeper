@@ -2,10 +2,12 @@ package repository
 
 import (
 	"context"
+	"secret-keeper/internal/secret/domain"
 
 	"github.com/KirylJazzSax/secret-keeper/internal/common/db"
 	"github.com/KirylJazzSax/secret-keeper/internal/secret/domain"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -32,8 +34,11 @@ func (r *MongoRepository) SecretsList(ctx context.Context, userId string) ([]*do
 	if err != nil {
 		return nil, err
 	}
-	coll.Find(ctx, bson.M{{"user", id}})
-	return []*domain.Secret{}, nil
+	scrs := []*domain.Secret{}
+	if err = coll.Find(ctx, bson.D{{"user", id}}).Decode(&scrs); err != nil {
+		return nil, err
+	}
+	return scrs, nil
 }
 func (r *MongoRepository) GetSecret(ctx context.Context, id uint64, email string) (*domain.Secret, error) {
 	return &domain.Secret{}, nil
