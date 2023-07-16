@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"secret-keeper/internal/secret/app/command"
 
 	"github.com/KirylJazzSax/secret-keeper/internal/common/errors"
 	"github.com/KirylJazzSax/secret-keeper/internal/common/gen/secret"
@@ -93,9 +94,26 @@ func (s *Server) ShowSecret(ctx context.Context, r *secret.ShowSecretRequest) (*
 }
 
 func (s *Server) DeleteSecret(ctx context.Context, r *secret.DeleteSecretRequest) (*secret.DeleteSecretResponse, error) {
+	p := &command.DeletePayload{
+		Id: r.Id,
+	}
+
+	if err := *s.application.Commands.Delete.Handle(ctx, p); err != nil {
+		return nil, errors.LogErrAndCreateInternal(err)
+	}
+
 	return &secret.DeleteSecretResponse{}, nil
 }
 
 func (s *Server) DeleteAllSecrets(ctx context.Context, r *secret.DeleteAllSecretsRequest) (*secret.DeleteAllSecretsResponse, error) {
+	u := ctx.Value("user").(*tokenMaker.Payload)
+
+	p := &command.DeletePayload{
+		UserId: u.Id,
+	}
+
+	if err := *s.application.Commands.DeleteAll.Handle(ctx, p); err != nil {
+		return nil, errors.LogErrAndCreateInternal(err)
+	}
 	return &secret.DeleteAllSecretsResponse{}, nil
 }
