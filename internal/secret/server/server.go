@@ -110,7 +110,7 @@ func (s *Server) DeleteSecret(ctx context.Context, r *secret.DeleteSecretRequest
 func (s *Server) DeleteAllSecrets(ctx context.Context, r *secret.DeleteAllSecretsRequest) (*secret.DeleteAllSecretsResponse, error) {
 	u := ctx.Value("user").(*tokenMaker.Payload)
 
-	p := &command.DeletePayload{
+	p := &command.DeleteAllPayload{
 		UserId: u.Id,
 	}
 
