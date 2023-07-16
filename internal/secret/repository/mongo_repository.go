@@ -46,12 +46,54 @@ func (r *MongoRepository) SecretsList(ctx context.Context, userId string) ([]*do
 
 	return scrs, nil
 }
-func (r *MongoRepository) GetSecret(ctx context.Context, id uint64, email string) (*domain.Secret, error) {
-	return &domain.Secret{}, nil
+func (r *MongoRepository) GetSecret(ctx context.Context, id uint64, userId string) (*domain.Secret, error) {
+	coll := r.client.Database(db.DB).Collection(db.SecretsCollection)
+	uId, err := primitive.ObjectIDFromHex(userId)
+	if err != nil {
+		return nil, err
+	}
+
+	sId, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return nil, err
+	}
+
+	scr := *domain.Secret{}
+	if err := coll.FindOne(ctx, bson.D{{"user", id}, {"_id", sId}}).Decode(scr); err != nil {
+		return nil, err
+	}
+
+	return scr, nil
 }
-func (r *MongoRepository) DeleteSecret(ctx context.Context, id uint64, email string) error {
+func (r *MongoRepository) DeleteSecret(ctx context.Context, id uint64, userId string) error {
+	coll := r.client.Database(db.DB).Collection(db.SecretsCollection)
+	uId, err := primitive.ObjectIDFromHex(userId)
+	if err != nil {
+		return nil, err
+	}
+
+	sId, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return nil, err
+	}
+
+	if _, err := coll.DeleteOne(ctx, bson.D{{"user", id}, {"_id", sId}}); err != nil {
+		return nil, err
+	}
+
 	return nil
 }
-func (r *MongoRepository) DeleteAllSecrets(ctx context.Context, email string) error {
+
+func (r *MongoRepository) DeleteAllSecrets(ctx context.Context, userId string) error {
+	coll := r.client.Database(db.DB).Collection(db.SecretsCollection)
+	uId, err := primitive.ObjectIDFromHex(userId)
+	if err != nil {
+		return nil, err
+	}
+
+	if _, err := coll.DeleteMany(ctx, bson.D{{"user", id}, {"_id", sId}}); err != nil {
+		return nil, err
+	}
+
 	return nil
 }

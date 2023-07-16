@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"secret-keeper/internal/secret/app/command"
 
 	"github.com/KirylJazzSax/secret-keeper/internal/common/errors"
 	"github.com/KirylJazzSax/secret-keeper/internal/common/gen/secret"
@@ -72,11 +73,22 @@ func (s *Server) SecretsList(ctx context.Context, r *secret.SecretsListRequest) 
 }
 
 func (s *Server) ShowSecret(ctx context.Context, r *secret.ShowSecretRequest) (*secret.ShowSecretResponse, error) {
+	p := &command.ShowPayload{
+		Id:       r.Id,
+		Email:    r.Email,
+		Password: r.Password,
+		Decoded:  *domain.Secret{},
+	}
+
+	if err := s.application.Commands.Show.Handle(ctx, p); err != nil {
+		return nil, errors.LogErrAndCreateInternal(err)
+	}
+
 	return &secret.ShowSecretResponse{
 		Secret: &secret.Secret{
-			Id:    "",
-			Title: "",
-			Body:  "",
+			Id:    p.Decoded.Id,
+			Title: p.Decoded.Title,
+			Body:  p.Decoded.Body,
 		},
 	}, nil
 }
