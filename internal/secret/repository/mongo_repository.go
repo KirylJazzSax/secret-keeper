@@ -40,7 +40,7 @@ func (r *MongoRepository) SecretsList(ctx context.Context, userId string) ([]*do
 		return nil, err
 	}
 
-	if err = cursor.Decode(&scrs); err != nil {
+	if err = cursor.All(ctx, &scrs); err != nil {
 		return nil, err
 	}
 
