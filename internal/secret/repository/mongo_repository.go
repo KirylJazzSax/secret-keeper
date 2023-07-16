@@ -33,11 +33,18 @@ func (r *MongoRepository) SecretsList(ctx context.Context, userId string) ([]*do
 	if err != nil {
 		return nil, err
 	}
+
 	scrs := []*domain.Secret{}
-	if err = coll.Find(ctx, bson.D{{"user", id}}).Decode(&scrs); err != nil {
+	cursor, err = coll.Find(ctx, bson.D{{"user", id}}).Decode(&scrs)
+	if err != nil {
 		return nil, err
 	}
-	return scrs, nil
+
+	if err = cursor.Decode(&scrs); err != nil {
+		return nil, err
+	}
+	
+	returnx scrs, nil
 }
 func (r *MongoRepository) GetSecret(ctx context.Context, id uint64, email string) (*domain.Secret, error) {
 	return &domain.Secret{}, nil
