@@ -100,7 +100,7 @@ func (s *Server) DeleteSecret(ctx context.Context, r *secret.DeleteSecretRequest
 		UserId: u.Id,
 	}
 
-	if err := *s.application.Commands.Delete.Handle(ctx, p); err != nil {
+	if err := s.application.Commands.Delete.Handle(ctx, p); err != nil {
 		return nil, errors.LogErrAndCreateInternal(err)
 	}
 
@@ -114,7 +114,7 @@ func (s *Server) DeleteAllSecrets(ctx context.Context, r *secret.DeleteAllSecret
 		UserId: u.Id,
 	}
 
-	if err := *s.application.Commands.DeleteAll.Handle(ctx, p); err != nil {
+	if err := s.application.Commands.DeleteAll.Handle(ctx, p); err != nil {
 		return nil, errors.LogErrAndCreateInternal(err)
 	}
 	return &secret.DeleteAllSecretsResponse{}, nil
