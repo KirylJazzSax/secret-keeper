@@ -65,11 +65,11 @@ func (r *MongoRepository) GetSecret(ctx context.Context, id uint64, userId strin
 
 	return scr, nil
 }
-func (r *MongoRepository) DeleteSecret(ctx context.Context, id uint64, userId string) error {
+func (r *MongoRepository) DeleteSecret(ctx context.Context, id string, userId string) error {
 	coll := r.client.Database(db.DB).Collection(db.SecretsCollection)
 	uId, err := primitive.ObjectIDFromHex(userId)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	sId, err := primitive.ObjectIDFromHex(id)
@@ -77,8 +77,8 @@ func (r *MongoRepository) DeleteSecret(ctx context.Context, id uint64, userId st
 		return nil, err
 	}
 
-	if _, err := coll.DeleteOne(ctx, bson.D{{"user", id}, {"_id", sId}}); err != nil {
-		return nil, err
+	if _, err := coll.DeleteOne(ctx, bson.D{{"user", uId}, {"_id", sId}}); err != nil {
+		return err
 	}
 
 	return nil
@@ -88,11 +88,11 @@ func (r *MongoRepository) DeleteAllSecrets(ctx context.Context, userId string) e
 	coll := r.client.Database(db.DB).Collection(db.SecretsCollection)
 	uId, err := primitive.ObjectIDFromHex(userId)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	if _, err := coll.DeleteMany(ctx, bson.D{{"user", id}, {"_id", sId}}); err != nil {
-		return nil, err
+	if _, err := coll.DeleteMany(ctx, bson.D{{"user", uId}}); err != nil {
+		return err
 	}
 
 	return nil
