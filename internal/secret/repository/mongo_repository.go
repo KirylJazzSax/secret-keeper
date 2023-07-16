@@ -47,7 +47,7 @@ func (r *MongoRepository) SecretsList(ctx context.Context, userId string) ([]*do
 	return scrs, nil
 }
 func (r *MongoRepository) GetSecret(ctx context.Context, id string, userId string) (*domain.Secret, error) {
-	coll := r.client.Database(db.DB).Collection(db.UsersCollection)
+	coll := r.client.Database(db.DB).Collection(db.SecretsCollection)
 	uId, err := primitive.ObjectIDFromHex(userId)
 	if err != nil {
 		return nil, err
