@@ -32,9 +32,9 @@ func (h *ShowHandler) Handle(ctx context.Context, p *ShowPayload) error {
 		return err
 	}
 
-	s, err := h.repo.GetSecret(ctx, p.Id, u.Id)
+	s, err := h.repo.GetSecret(ctx, p.Id, u.Id.Hex())
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	var decrypted string
