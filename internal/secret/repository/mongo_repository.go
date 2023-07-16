@@ -58,6 +58,7 @@ func (r *MongoRepository) GetSecret(ctx context.Context, id string, userId strin
 		return nil, err
 	}
 
+	scr := &domain.Secret{}
 	if err := coll.FindOne(ctx, bson.D{{"user", uId}, {"_id", sId}}).Decode(scr); err != nil {
 		return nil, err
 	}
@@ -73,7 +74,7 @@ func (r *MongoRepository) DeleteSecret(ctx context.Context, id string, userId st
 
 	sId, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	if _, err := coll.DeleteOne(ctx, bson.D{{"user", uId}, {"_id", sId}}); err != nil {
