@@ -1,8 +1,6 @@
 package app
 
 import (
-	"secret-keeper/internal/secret/app/command"
-
 	"github.com/KirylJazzSax/secret-keeper/internal/common/encryptor"
 	"github.com/KirylJazzSax/secret-keeper/internal/common/password"
 	"github.com/KirylJazzSax/secret-keeper/internal/secret/app/command"
