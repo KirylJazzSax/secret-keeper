@@ -58,7 +58,6 @@ func (r *MongoRepository) GetSecret(ctx context.Context, id string, userId strin
 		return nil, err
 	}
 
-	scr := *domain.Secret{}
 	if err := coll.FindOne(ctx, bson.D{{"user", uId}, {"_id", sId}}).Decode(scr); err != nil {
 		return nil, err
 	}

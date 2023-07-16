@@ -76,7 +76,7 @@ func (s *Server) ShowSecret(ctx context.Context, r *secret.ShowSecretRequest) (*
 		Id:       r.Id,
 		Email:    r.Email,
 		Password: r.Password,
-		Decoded:  *domain.Secret{},
+		Decoded:  &domain.Secret{},
 	}
 
 	if err := s.application.Commands.Show.Handle(ctx, p); err != nil {
