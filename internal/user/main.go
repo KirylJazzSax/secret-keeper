@@ -12,7 +12,7 @@ import (
 	"github.com/KirylJazzSax/secret-keeper/internal/common/utils"
 	"github.com/KirylJazzSax/secret-keeper/internal/common/validation"
 	"github.com/KirylJazzSax/secret-keeper/internal/user/app"
-	"github.com/KirylJazzSax/secret-keeper/internal/user/repository"
+	"github.com/KirylJazzSax/secret-keeper/internal/user/domain"
 	"github.com/KirylJazzSax/secret-keeper/internal/user/server"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/samber/do"
@@ -22,20 +22,17 @@ import (
 
 func main() {
 	ctx := context.Background()
-	di.ProvideDeps()
+	di.ProvideDeps(ctx)
 	config := do.MustInvoke[*utils.Config](nil)
 
 	switch config.SrvType {
 	case commonServer.GRPCType:
-		client, err := db.NewMongodbClient(ctx, config)
-		if err != nil {
-			panic(err)
-		}
-		defer client.Disconnect(ctx)
+		do.MustInvoke[*db.Db](nil)
+		defer do.Shutdown[*db.Db](ctx)
 
 		hasher := do.MustInvoke[password.PassowrdHasher](nil)
 		validator := do.MustInvoke[validation.Validator](nil)
-		repo := repository.NewMongoUserRepository(client)
+		repo := do.MustInvoke[domain.Repository](nil)
 
 		a := app.NewApplication(validator, hasher, repo)
 		s := server.NewServer(a)

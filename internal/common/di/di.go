@@ -1,17 +1,22 @@
 package di
 
 import (
+	"context"
 	"os"
 	"time"
 
+	"github.com/KirylJazzSax/secret-keeper/internal/common/db"
 	"github.com/KirylJazzSax/secret-keeper/internal/common/encryptor"
 	"github.com/KirylJazzSax/secret-keeper/internal/common/password"
 	"github.com/KirylJazzSax/secret-keeper/internal/common/token"
 	"github.com/KirylJazzSax/secret-keeper/internal/common/utils"
 	"github.com/KirylJazzSax/secret-keeper/internal/common/validation"
+	"github.com/KirylJazzSax/secret-keeper/internal/user/domain"
+	"github.com/KirylJazzSax/secret-keeper/internal/user/repository"
 
 	"github.com/samber/do"
 	"github.com/spf13/viper"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 func provideEnvConfig(i *do.Injector) (*utils.Config, error) {
@@ -68,23 +73,25 @@ func provideValidator(i *do.Injector) (validation.Validator, error) {
 	return validation.NewSimpleValidator(), nil
 }
 
-// func provideRepository(i *do.Injector) (repository.Repository, error) {
-// 	config := do.MustInvoke[*utils.Config](i)
-// 	return repository.NewBoltRepository(config.DbUrl)
-// }
+func provideDB(ctx context.Context) func(i *do.Injector) (*db.Db, error) {
+	return func(i *do.Injector) (*mongo.Client, error) {
+		config := do.MustInvoke[*utils.Config](i)
+		return db.NewDbClient(ctx, config)
+	}
+}
 
-// func provideServer(i *do.Injector) (*gapi.Server, error) {
-// 	tokenManager := do.MustInvoke[token.Maker](i)
-// 	repo := do.MustInvoke[repository.Repository](i)
-// 	config := do.MustInvoke[*utils.Config](i)
-// 	return gapi.NewServer(repo, tokenManager, config), nil
-// }
+func provideUserRepository(i *do.Injector) (domain.Repository, error) {
+	db := do.MustInvoke[*db.Db](i)
+	return repository.NewMongoUserRepository(db.Client), nil
+}
 
-func ProvideDeps() error {
+func ProvideDeps(ctx context.Context) error {
 	do.Provide(nil, provideEnvConfig)
 	do.Provide(nil, provideEncryptor)
 	do.Provide(nil, provideHasher)
 	do.Provide(nil, provideMaker)
 	do.Provide(nil, provideValidator)
+	do.Provide(nil, provideUserRepository)
+	do.Provide(nil, provideDB(ctx))
 	return nil
 }

@@ -16,17 +16,32 @@ const (
 	SecretsCollection = "secrets"
 )
 
-func NewMongodbClient(ctx context.Context, config *utils.Config) (*mongo.Client, error) {
-	uri := fmt.Sprintf("mongodb://%s:%s@db:%s", config.DbUsername, config.DbPassword, config.DbPort)
-	return mongo.Connect(ctx, options.Client().ApplyURI(uri))
+type Db struct {
+	Client *mongo.Client
 }
 
-func SetupMongodb(client *mongo.Client) error {
+func (db *Db) Shutdown() error {
+	return db.Client.Disconnect(context.TODO())
+}
+
+func NewDbClient(ctx context.Context, config *utils.Config) (*Db, error) {
+	uri := fmt.Sprintf("mongodb://%s:%s@db:%s", config.DbUsername, config.DbPassword, config.DbPort)
+	client, err := mongo.Connect(ctx, options.Client().ApplyURI(uri))
+	if err != nil {
+		return err
+	}
+
+	return &Db{
+		Client: client,
+	}, nil
+}
+
+func SetupMongodb(ctx context.Context, client *mongo.Client) error {
 	coll := client.Database(DB).Collection(UsersCollection)
 	indexModel := mongo.IndexModel{
 		Keys:    bson.D{{"email", -1}},
 		Options: options.Index().SetUnique(true),
 	}
-	_, err := coll.Indexes().CreateOne(context.TODO(), indexModel)
+	_, err := coll.Indexes().CreateOne(ctx, indexModel)
 	return err
 }
