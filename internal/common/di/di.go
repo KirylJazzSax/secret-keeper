@@ -16,7 +16,6 @@ import (
 
 	"github.com/samber/do"
 	"github.com/spf13/viper"
-	"go.mongodb.org/mongo-driver/mongo"
 )
 
 func provideEnvConfig(i *do.Injector) (*utils.Config, error) {
@@ -74,7 +73,7 @@ func provideValidator(i *do.Injector) (validation.Validator, error) {
 }
 
 func provideDB(ctx context.Context) func(i *do.Injector) (*db.Db, error) {
-	return func(i *do.Injector) (*mongo.Client, error) {
+	return func(i *do.Injector) (*db.Db, error) {
 		config := do.MustInvoke[*utils.Config](i)
 		return db.NewDbClient(ctx, config)
 	}
