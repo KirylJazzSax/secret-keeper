@@ -28,7 +28,7 @@ func NewDbClient(ctx context.Context, config *utils.Config) (*Db, error) {
 	uri := fmt.Sprintf("mongodb://%s:%s@db:%s", config.DbUsername, config.DbPassword, config.DbPort)
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI(uri))
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	return &Db{
