@@ -25,7 +25,7 @@ func (r *InMemoryRepository) SecretsList(ctx context.Context, userId string) ([]
 	scrs := []*domain.Secret{}
 
 	for _, v := range r.secrets {
-		if v.User == userId {
+		if v.User.Hex() == userId {
 			scrs = append(scrs, v)
 		}
 	}
@@ -38,7 +38,7 @@ func (r *InMemoryRepository) GetSecret(ctx context.Context, id string, userId st
 		return nil, errors.ErrNotExists
 	}
 
-	if s.User != userId {
+	if s.User.Hex() != userId {
 		return nil, errors.ErrNotExists
 	}
 
@@ -51,15 +51,15 @@ func (r *InMemoryRepository) DeleteSecret(ctx context.Context, id string, userId
 		return err
 	}
 
-	delete(r.secrets, s.Id)
+	delete(r.secrets, s.Id.Hex())
 
 	return nil
 }
 
 func (r *InMemoryRepository) DeleteAllSecrets(ctx context.Context, userId string) error {
 	for _, v := range r.secrets {
-		if v.User == userId {
-			delete(r.secrets, v.Id)
+		if v.User.Hex() == userId {
+			delete(r.secrets, v.Id.Hex())
 		}
 	}
 
