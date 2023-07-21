@@ -98,8 +98,10 @@ func ProvideDeps(ctx context.Context) error {
 	do.Provide(nil, provideHasher)
 	do.Provide(nil, provideMaker)
 	do.Provide(nil, provideValidator)
-	do.Provide(nil, provideUserRepository)
 	do.Provide(nil, provideDB(ctx))
-	do.Provide(nil, provideSecretRepository)
+
+	do.ProvideNamed(nil, "users-repo", provideUserRepository)
+	do.ProvideNamed(nil, "secrets-repo", provideSecretRepository)
+
 	return nil
 }
