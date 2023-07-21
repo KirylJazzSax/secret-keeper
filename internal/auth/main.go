@@ -50,7 +50,7 @@ func main() {
 		})
 	case commonServer.GatewayType:
 		commonServer.RunGatewayServer(config.Cors, config.HttpPort, func(mux *runtime.ServeMux, opts []grpc.DialOption) {
-			auth.RegisterAuthServiceHandlerFromEndpoint(context.Background(), mux, config.GrpcEndpoint, opts)
+			auth.RegisterAuthServiceHandlerFromEndpoint(ctx, mux, config.GrpcEndpoint, opts)
 		})
 	default:
 		panic(errors.UnknownServerType)
