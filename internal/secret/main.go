@@ -31,11 +31,8 @@ func main() {
 
 	switch config.SrvType {
 	case commonServer.GRPCType:
-		client, err := db.NewMongodbClient(ctx, config)
-		if err != nil {
-			panic(err)
-		}
-		defer client.Disconnect(ctx)
+		do.MustInvoke[*db.Db](nil)
+		defer do.Shutdown[*db.Db](ctx)
 
 		encr := do.MustInvoke[encryptor.Encryptor](nil)
 		hasher := do.MustInvoke[password.PassowrdHasher](nil)

@@ -13,7 +13,8 @@ import (
 	commonServer "github.com/KirylJazzSax/secret-keeper/internal/common/server"
 	"github.com/KirylJazzSax/secret-keeper/internal/common/token"
 	"github.com/KirylJazzSax/secret-keeper/internal/common/utils"
-	"github.com/KirylJazzSax/secret-keeper/internal/user/repository"
+	"github.com/KirylJazzSax/secret-keeper/internal/user/domain"
+
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/samber/do"
 	"google.golang.org/grpc"
@@ -22,19 +23,16 @@ import (
 
 func main() {
 	ctx := context.Background()
-	di.ProvideDeps()
+	di.ProvideDeps(ctx)
 	config := do.MustInvoke[*utils.Config](nil)
 
 	switch config.SrvType {
 	case commonServer.GRPCType:
-		client, err := db.NewMongodbClient(ctx, config)
-		if err != nil {
-			panic(err)
-		}
-		defer client.Disconnect(ctx)
+		do.MustInvoke[*db.Db](nil)
+		defer do.Shutdown[*db.Db](ctx)
 
 		tokenManager := do.MustInvoke[token.Maker](nil)
-		repo := repository.NewMongoUserRepository(client)
+		repo := do.MustInvoke[domain.Repository](nil)
 		hasher := do.MustInvoke[password.PassowrdHasher](nil)
 
 		application := app.NewApplication(
