@@ -12,7 +12,7 @@ import (
 	"github.com/KirylJazzSax/secret-keeper/internal/common/utils"
 	"github.com/KirylJazzSax/secret-keeper/internal/common/validation"
 	secretDomain "github.com/KirylJazzSax/secret-keeper/internal/secret/domain"
-	"github.com/KirylJazzSax/secret-keeper/internal/user/domain"
+	userDomain "github.com/KirylJazzSax/secret-keeper/internal/user/domain"
 
 	secretRepo "github.com/KirylJazzSax/secret-keeper/internal/secret/repository"
 	"github.com/KirylJazzSax/secret-keeper/internal/user/repository"
@@ -82,7 +82,7 @@ func provideDB(ctx context.Context) func(i *do.Injector) (*db.Db, error) {
 	}
 }
 
-func provideUserRepository(i *do.Injector) (domain.Repository, error) {
+func provideUserRepository(i *do.Injector) (userDomain.Repository, error) {
 	db := do.MustInvoke[*db.Db](i)
 	return repository.NewMongoUserRepository(db.Client), nil
 }
