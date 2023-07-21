@@ -5,8 +5,6 @@ import (
 
 	"github.com/KirylJazzSax/secret-keeper/internal/common/errors"
 	"github.com/KirylJazzSax/secret-keeper/internal/secret/domain"
-
-	"github.com/google/uuid"
 )
 
 type InMemoryRepository struct {
@@ -20,8 +18,7 @@ func NewInMemoryRepository() *InMemoryRepository {
 }
 
 func (r *InMemoryRepository) CreateSecret(ctx context.Context, s *domain.Secret) error {
-	s.Id = uuid.New().String()
-	r.secrets[s.Id] = s
+	r.secrets[s.Id.Hex()] = s
 	return nil
 }
 func (r *InMemoryRepository) SecretsList(ctx context.Context, userId string) ([]*domain.Secret, error) {

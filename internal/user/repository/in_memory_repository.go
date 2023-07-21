@@ -4,8 +4,6 @@ import (
 	"context"
 
 	"github.com/KirylJazzSax/secret-keeper/internal/user/domain"
-
-	"github.com/google/uuid"
 )
 
 type InMemoryUserRepository struct {
@@ -13,7 +11,6 @@ type InMemoryUserRepository struct {
 }
 
 func (r *InMemoryUserRepository) CreateUser(ctx context.Context, u *domain.User) error {
-	u.Id = uuid.New().String()
 	r.users[u.Email] = u
 	return nil
 }
