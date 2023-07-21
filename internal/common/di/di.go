@@ -11,7 +11,10 @@ import (
 	"github.com/KirylJazzSax/secret-keeper/internal/common/token"
 	"github.com/KirylJazzSax/secret-keeper/internal/common/utils"
 	"github.com/KirylJazzSax/secret-keeper/internal/common/validation"
+	secretDomain "github.com/KirylJazzSax/secret-keeper/internal/secret/domain"
 	"github.com/KirylJazzSax/secret-keeper/internal/user/domain"
+
+	secretRepo "github.com/KirylJazzSax/secret-keeper/internal/secret/repository"
 	"github.com/KirylJazzSax/secret-keeper/internal/user/repository"
 
 	"github.com/samber/do"
@@ -84,6 +87,11 @@ func provideUserRepository(i *do.Injector) (domain.Repository, error) {
 	return repository.NewMongoUserRepository(db.Client), nil
 }
 
+func provideSecretRepository(i *do.Injector) (secretDomain.Repository, error) {
+	db := do.MustInvoke[*db.Db](i)
+	return secretRepo.NewMongoRepository(db.Client), nil
+}
+
 func ProvideDeps(ctx context.Context) error {
 	do.Provide(nil, provideEnvConfig)
 	do.Provide(nil, provideEncryptor)
@@ -92,5 +100,6 @@ func ProvideDeps(ctx context.Context) error {
 	do.Provide(nil, provideValidator)
 	do.Provide(nil, provideUserRepository)
 	do.Provide(nil, provideDB(ctx))
+	do.Provide(nil, provideSecretRepository)
 	return nil
 }

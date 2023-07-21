@@ -13,9 +13,9 @@ import (
 	commonServer "github.com/KirylJazzSax/secret-keeper/internal/common/server"
 	"github.com/KirylJazzSax/secret-keeper/internal/common/utils"
 	"github.com/KirylJazzSax/secret-keeper/internal/secret/app"
-	"github.com/KirylJazzSax/secret-keeper/internal/secret/repository"
+	"github.com/KirylJazzSax/secret-keeper/internal/secret/domain"
 	"github.com/KirylJazzSax/secret-keeper/internal/secret/server"
-	userRepository "github.com/KirylJazzSax/secret-keeper/internal/user/repository"
+	userDomain "github.com/KirylJazzSax/secret-keeper/internal/user/domain"
 	grpc_auth "github.com/grpc-ecosystem/go-grpc-middleware/auth"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
@@ -26,7 +26,7 @@ import (
 
 func main() {
 	ctx := context.Background()
-	di.ProvideDeps()
+	di.ProvideDeps(ctx)
 	config := do.MustInvoke[*utils.Config](nil)
 
 	switch config.SrvType {
@@ -39,8 +39,8 @@ func main() {
 
 		encr := do.MustInvoke[encryptor.Encryptor](nil)
 		hasher := do.MustInvoke[password.PassowrdHasher](nil)
-		repo := repository.NewMongoRepository(client)
-		userRepo := userRepository.NewMongoUserRepository(client)
+		repo := do.MustInvoke[domain.Repository](nil)
+		userRepo := do.MustInvoke[userDomain.Repository](nil)
 
 		a := app.NewApplication(encr, hasher, repo, userRepo)
 		s := server.NewServer(a)
