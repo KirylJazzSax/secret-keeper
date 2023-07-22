@@ -5,10 +5,11 @@ import (
 	"fmt"
 
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/logging"
+	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 )
 
-func InterceptorLogger(l log.Logger) logging.Logger {
+func InterceptorLogger(l zerolog.Logger) logging.Logger {
 	return logging.LoggerFunc(func(_ context.Context, lvl logging.Level, msg string, fields ...any) {
 		switch lvl {
 		case logging.LevelDebug:
