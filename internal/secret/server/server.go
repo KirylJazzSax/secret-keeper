@@ -38,7 +38,7 @@ func (s *Server) SaveSecret(ctx context.Context, r *secret.SaveSecretRequest) (*
 
 	return &secret.SaveSecretResponse{
 		Secret: &secret.Secret{
-			Id:    p.Secret.Id.String(),
+			Id:    p.Secret.Id.Hex(),
 			Title: p.Secret.Title,
 			Body:  p.Secret.Body,
 		},
@@ -60,7 +60,7 @@ func (s *Server) SecretsList(ctx context.Context, r *secret.SecretsListRequest) 
 	resSecrets := make([]*secret.Secret, len(secrets))
 	for i, s := range secrets {
 		resSecrets[i] = &secret.Secret{
-			Id:    s.Id.String(),
+			Id:    s.Id.Hex(),
 			Title: s.Title,
 			Body:  s.Body,
 		}
