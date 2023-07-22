@@ -15,6 +15,7 @@ import (
 	"github.com/KirylJazzSax/secret-keeper/internal/common/gen/auth"
 	"github.com/KirylJazzSax/secret-keeper/internal/common/gen/secret"
 	"github.com/KirylJazzSax/secret-keeper/internal/common/gen/user"
+	"github.com/KirylJazzSax/secret-keeper/internal/common/logs"
 	"github.com/KirylJazzSax/secret-keeper/internal/common/password"
 	commonServer "github.com/KirylJazzSax/secret-keeper/internal/common/server"
 	"github.com/KirylJazzSax/secret-keeper/internal/common/token"
@@ -29,7 +30,9 @@ import (
 	"github.com/KirylJazzSax/secret-keeper/internal/user/repository"
 	"github.com/KirylJazzSax/secret-keeper/internal/user/server"
 	grpc_auth "github.com/grpc-ecosystem/go-grpc-middleware/auth"
+	"github.com/rs/zerolog"
 
+	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/logging"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/samber/do"
 	"google.golang.org/grpc"
@@ -59,7 +62,12 @@ func main() {
 
 	a := app.NewApplication(validator, hasher, repo)
 	s := server.NewServer(a)
-	go commonServer.RunGRPCServer(usersConfig.GrpcEndpoint, []grpc.ServerOption{}, func(srv *grpc.Server) {
+	logger := zerolog.New(os.Stdout)
+	usersOpts := []grpc.ServerOption{
+		grpc.UnaryInterceptor(logging.UnaryServerInterceptor(logs.InterceptorLogger(logger))),
+	}
+
+	go commonServer.RunGRPCServer(usersConfig.GrpcEndpoint, usersOpts, func(srv *grpc.Server) {
 		user.RegisterUsersServiceServer(srv, s)
 		reflection.Register(srv)
 	})
@@ -69,11 +77,14 @@ func main() {
 
 	aS := secretApp.NewApplication(encr, hasher, secretsRepo, repo)
 	sS := secretServer.NewServer(aS)
-	opts := []grpc.ServerOption{
-		grpc.UnaryInterceptor(grpc_auth.UnaryServerInterceptor(commonAuth.AuthFunc)),
+	secretsOpts := []grpc.ServerOption{
+		grpc.ChainUnaryInterceptor(
+			grpc_auth.UnaryServerInterceptor(commonAuth.AuthFunc),
+			logging.UnaryServerInterceptor(logs.InterceptorLogger(logger)),
+		),
 	}
 
-	go commonServer.RunGRPCServer(secretsConfig.GrpcEndpoint, opts, func(srv *grpc.Server) {
+	go commonServer.RunGRPCServer(secretsConfig.GrpcEndpoint, secretsOpts, func(srv *grpc.Server) {
 		secret.RegisterSecretKeeperServer(srv, sS)
 		reflection.Register(srv)
 	})
@@ -90,7 +101,11 @@ func main() {
 	)
 	authS := authServer.NewServer(application)
 
-	go commonServer.RunGRPCServer(authConfig.GrpcEndpoint, []grpc.ServerOption{}, func(srv *grpc.Server) {
+	authOpts := []grpc.ServerOption{
+		grpc.UnaryInterceptor(logging.UnaryServerInterceptor(logs.InterceptorLogger(logger))),
+	}
+
+	go commonServer.RunGRPCServer(authConfig.GrpcEndpoint, authOpts, func(srv *grpc.Server) {
 		auth.RegisterAuthServiceServer(srv, authS)
 		reflection.Register(srv)
 	})
