@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"os"
 
 	"github.com/KirylJazzSax/secret-keeper/internal/auth/app"
 	"github.com/KirylJazzSax/secret-keeper/internal/auth/server"
@@ -9,13 +10,16 @@ import (
 	"github.com/KirylJazzSax/secret-keeper/internal/common/di"
 	"github.com/KirylJazzSax/secret-keeper/internal/common/errors"
 	"github.com/KirylJazzSax/secret-keeper/internal/common/gen/auth"
+	"github.com/KirylJazzSax/secret-keeper/internal/common/logs"
 	"github.com/KirylJazzSax/secret-keeper/internal/common/password"
 	commonServer "github.com/KirylJazzSax/secret-keeper/internal/common/server"
 	"github.com/KirylJazzSax/secret-keeper/internal/common/token"
 	"github.com/KirylJazzSax/secret-keeper/internal/common/utils"
 	"github.com/KirylJazzSax/secret-keeper/internal/user/domain"
 
+	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/logging"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	"github.com/rs/zerolog"
 	"github.com/samber/do"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -44,7 +48,11 @@ func main() {
 
 		s := server.NewServer(application)
 
-		commonServer.RunGRPCServer(config.GrpcEndpoint, []grpc.ServerOption{}, func(srv *grpc.Server) {
+		opts := []grpc.ServerOption{
+			grpc.UnaryInterceptor(logging.UnaryServerInterceptor(logs.InterceptorLogger(zerolog.New(os.Stdout)))),
+		}
+
+		commonServer.RunGRPCServer(config.GrpcEndpoint, opts, func(srv *grpc.Server) {
 			auth.RegisterAuthServiceServer(srv, s)
 			reflection.Register(srv)
 		})
