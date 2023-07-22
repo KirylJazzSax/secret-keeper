@@ -12,13 +12,13 @@ func InterceptorLogger(l zerolog.Logger) logging.Logger {
 	return logging.LoggerFunc(func(_ context.Context, lvl logging.Level, msg string, fields ...any) {
 		switch lvl {
 		case logging.LevelDebug:
-			_ = l.Debug().Msg(msg)
+			_ = l.Debug().Str("msg", msg).Msg("")
 		case logging.LevelInfo:
-			_ = l.Info().Msg(msg)
+			_ = l.Info().Str("msg", msg).Msg("")
 		case logging.LevelWarn:
-			_ = l.Warn().Msg(msg)
+			_ = l.Warn().Str("msg", msg).Msg("")
 		case logging.LevelError:
-			_ = l.Error().Msg(msg)
+			_ = l.Error().Str("msg", msg).Msg("")
 		default:
 			panic(fmt.Sprintf("unknown level %v", lvl))
 		}
