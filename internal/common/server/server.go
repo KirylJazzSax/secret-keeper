@@ -41,6 +41,10 @@ func RunGatewayServer(corsOrigin string, httpPort string, cb func(mux *runtime.S
 	mux := runtime.NewServeMux()
 	httpMux := http.NewServeMux()
 
+	httpMux.Handle("/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		mux.ServeHTTP(w, r)
+	}))
+
 	listener, _ := net.Listen("tcp", fmt.Sprintf(":%s", httpPort))
 	opts := []grpc.DialOption{
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
@@ -53,6 +57,7 @@ func RunGatewayServer(corsOrigin string, httpPort string, cb func(mux *runtime.S
 		AllowedMethods:   []string{"GET", "POST", "PATCH", "DELETE", "OPTIONS"},
 		AllowedHeaders:   []string{"Accept", "Content-Type", "Content-Length", "Accept-Encoding", "Authorization", "ResponseType"},
 	})
+
 	handler := c.Handler(httpMux)
 	log.Info().Msg("running http.")
 	if err := http.Serve(listener, handler); err != nil {
