@@ -8,6 +8,7 @@ import (
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc/credentials/insecure"
 
+	"github.com/rs/cors"
 	"github.com/rs/zerolog/log"
 	"google.golang.org/grpc"
 )
@@ -39,6 +40,7 @@ func RunGRPCServer(endpoint string, opts []grpc.ServerOption, cb func(s *grpc.Se
 func RunGatewayServer(corsOrigin string, httpPort string, cb func(mux *runtime.ServeMux, opts []grpc.DialOption)) error {
 	mux := runtime.NewServeMux()
 	httpMux := http.NewServeMux()
+
 	httpMux.Handle("/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Access-Control-Allow-Origin", corsOrigin)
 		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE, OPTIONS")
@@ -53,8 +55,9 @@ func RunGatewayServer(corsOrigin string, httpPort string, cb func(mux *runtime.S
 	}
 
 	cb(mux, opts)
+	handler := cors.Default().Handler(httpMux)
 	log.Info().Msg("running http.")
-	if err := http.Serve(listener, httpMux); err != nil {
+	if err := http.Serve(listener, handler); err != nil {
 		return err
 	}
 
