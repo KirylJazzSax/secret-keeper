@@ -36,7 +36,7 @@ func main() {
 	switch config.SrvType {
 	case commonServer.GRPCType:
 		do.MustInvoke[*db.Db](nil)
-		defer do.Shutdown[*db.Db](ctx)
+		defer do.Shutdown[*db.Db](nil)
 
 		encr := do.MustInvoke[encryptor.Encryptor](nil)
 		hasher := do.MustInvoke[password.PassowrdHasher](nil)
