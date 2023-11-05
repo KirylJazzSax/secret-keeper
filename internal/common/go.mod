@@ -3,14 +3,8 @@ module github.com/KirylJazzSax/secret-keeper/internal/common
 go 1.20
 
 require (
-<<<<<<< HEAD
-	github.com/KirylJazzSax/secret-keeper/internal/common v0.0.0-20230721220725-244b7d99ecb4
-	github.com/KirylJazzSax/secret-keeper/internal/secret v0.0.0-20230721220725-244b7d99ecb4
-	github.com/KirylJazzSax/secret-keeper/internal/user v0.0.0-20230721220725-244b7d99ecb4
-=======
 	github.com/KirylJazzSax/secret-keeper/internal/secret v0.0.0-20230722222239-ba707d5c291f
 	github.com/KirylJazzSax/secret-keeper/internal/user v0.0.0-20230722222239-ba707d5c291f
->>>>>>> feature/dev-server
 	github.com/aead/chacha20poly1305 v0.0.0-20201124145622-1a5aba2a8b29
 	github.com/golang/protobuf v1.5.3
 	github.com/grpc-ecosystem/go-grpc-middleware v1.4.0
@@ -24,13 +18,8 @@ require (
 	github.com/stretchr/testify v1.8.4
 	go.mongodb.org/mongo-driver v1.12.0
 	golang.org/x/crypto v0.11.0
-<<<<<<< HEAD
-	google.golang.org/genproto/googleapis/api v0.0.0-20230720185612-659f7aaaa771
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20230720185612-659f7aaaa771
-=======
 	google.golang.org/genproto/googleapis/api v0.0.0-20230711160842-782d3b101e98
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20230711160842-782d3b101e98
->>>>>>> feature/dev-server
 	google.golang.org/grpc v1.56.2
 	google.golang.org/protobuf v1.31.0
 )
