@@ -36,7 +36,7 @@ func main() {
 
 		hasher := do.MustInvoke[password.PassowrdHasher](nil)
 		validator := do.MustInvoke[validation.Validator](nil)
-		repo := do.MustInvoke[domain.Repository](nil)
+		repo := do.MustInvokeNamed[domain.Repository](nil, "users-repo")
 
 		a := app.NewApplication(validator, hasher, repo)
 		s := server.NewServer(a)

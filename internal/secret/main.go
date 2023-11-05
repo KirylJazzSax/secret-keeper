@@ -40,8 +40,8 @@ func main() {
 
 		encr := do.MustInvoke[encryptor.Encryptor](nil)
 		hasher := do.MustInvoke[password.PassowrdHasher](nil)
-		repo := do.MustInvoke[domain.Repository](nil)
-		userRepo := do.MustInvoke[userDomain.Repository](nil)
+		repo := do.MustInvokeNamed[domain.Repository](nil, "secrets-repo")
+		userRepo := do.MustInvokeNamed[userDomain.Repository](nil, "users-repo")
 
 		a := app.NewApplication(encr, hasher, repo, userRepo)
 		s := server.NewServer(a)
