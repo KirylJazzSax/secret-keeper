@@ -33,10 +33,10 @@ func main() {
 	switch config.SrvType {
 	case commonServer.GRPCType:
 		do.MustInvoke[*db.Db](nil)
-		defer do.Shutdown[*db.Db](ctx)
+		defer do.Shutdown[*db.Db](nil)
 
 		tokenManager := do.MustInvoke[token.Maker](nil)
-		repo := do.MustInvoke[domain.Repository](nil)
+		repo := do.MustInvokeNamed[domain.Repository](nil, "users-repo")
 		hasher := do.MustInvoke[password.PassowrdHasher](nil)
 
 		application := app.NewApplication(
