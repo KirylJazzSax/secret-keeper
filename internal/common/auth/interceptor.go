@@ -2,6 +2,7 @@ package auth
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/KirylJazzSax/secret-keeper/internal/common/errors"
 	"github.com/KirylJazzSax/secret-keeper/internal/common/token"
@@ -14,7 +15,7 @@ import (
 func AuthFunc(ctx context.Context) (context.Context, error) {
 	// test method
 	method, _ := grpc.Method(ctx)
-	
+	fmt.Println(method)
 	t, err := do.Invoke[token.Maker](nil)
 	if err != nil {
 		return nil, err
