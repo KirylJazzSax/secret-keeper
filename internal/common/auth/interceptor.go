@@ -8,9 +8,13 @@ import (
 	grpc_auth "github.com/grpc-ecosystem/go-grpc-middleware/auth"
 	grpc_ctxtags "github.com/grpc-ecosystem/go-grpc-middleware/tags"
 	"github.com/samber/do"
+	"google.golang.org/grpc"
 )
 
 func AuthFunc(ctx context.Context) (context.Context, error) {
+	// test method
+	method, _ := grpc.Method(ctx)
+	
 	t, err := do.Invoke[token.Maker](nil)
 	if err != nil {
 		return nil, err

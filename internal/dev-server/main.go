@@ -50,8 +50,8 @@ func main() {
 	provideDeps()
 
 	usersConfig := do.MustInvokeNamed[*utils.Config](nil, "users-config")
-	secretsConfig := do.MustInvokeNamed[*utils.Config](nil, "secrets-config")
-	authConfig := do.MustInvokeNamed[*utils.Config](nil, "auth-config")
+	// secretsConfig := do.MustInvokeNamed[*utils.Config](nil, "secrets-config")
+	// authConfig := do.MustInvokeNamed[*utils.Config](nil, "auth-config")
 
 	tokenManager := do.MustInvoke[token.Maker](nil)
 	hasher := do.MustInvoke[password.PassowrdHasher](nil)
@@ -63,17 +63,17 @@ func main() {
 	a := app.NewApplication(validator, hasher, repo)
 	s := server.NewServer(a)
 	logger := zerolog.New(os.Stdout)
-	usersOpts := []grpc.ServerOption{
-		grpc.UnaryInterceptor(logging.UnaryServerInterceptor(logs.InterceptorLogger(logger))),
-	}
+	// usersOpts := []grpc.ServerOption{
+	// grpc.UnaryInterceptor(logging.UnaryServerInterceptor(logs.InterceptorLogger(logger))),
+	// }
 
-	go commonServer.RunGRPCServer(usersConfig.GrpcEndpoint, usersOpts, func(srv *grpc.Server) {
-		user.RegisterUsersServiceServer(srv, s)
-		reflection.Register(srv)
-	})
-	go commonServer.RunGatewayServer(usersConfig.Cors, usersConfig.HttpPort, func(mux *runtime.ServeMux, opts []grpc.DialOption) {
-		user.RegisterUsersServiceHandlerFromEndpoint(ctx, mux, usersConfig.GrpcEndpoint, opts)
-	})
+	// go commonServer.RunGRPCServer(usersConfig.GrpcEndpoint, usersOpts, func(srv *grpc.Server) {
+	// 	user.RegisterUsersServiceServer(srv, s)
+	// 	reflection.Register(srv)
+	// })
+	// go commonServer.RunGatewayServer(usersConfig.Cors, usersConfig.HttpPort, func(mux *runtime.ServeMux, opts []grpc.DialOption) {
+	// user.RegisterUsersServiceHandlerFromEndpoint(ctx, mux, usersConfig.GrpcEndpoint, opts)
+	// })
 
 	aS := secretApp.NewApplication(encr, hasher, secretsRepo, repo)
 	sS := secretServer.NewServer(aS)
@@ -84,34 +84,38 @@ func main() {
 		),
 	}
 
-	go commonServer.RunGRPCServer(secretsConfig.GrpcEndpoint, secretsOpts, func(srv *grpc.Server) {
-		secret.RegisterSecretKeeperServer(srv, sS)
-		reflection.Register(srv)
-	})
+	// go commonServer.RunGRPCServer(secretsConfig.GrpcEndpoint, secretsOpts, func(srv *grpc.Server) {
+	// 	secret.RegisterSecretKeeperServer(srv, sS)
+	// 	reflection.Register(srv)
+	// })
 
-	go commonServer.RunGatewayServer(secretsConfig.Cors, secretsConfig.HttpPort, func(mux *runtime.ServeMux, opts []grpc.DialOption) {
-		secret.RegisterSecretKeeperHandlerFromEndpoint(ctx, mux, secretsConfig.GrpcEndpoint, opts)
-	})
+	// go commonServer.RunGatewayServer(secretsConfig.Cors, secretsConfig.HttpPort, func(mux *runtime.ServeMux, opts []grpc.DialOption) {
+	// 	secret.RegisterSecretKeeperHandlerFromEndpoint(ctx, mux, secretsConfig.GrpcEndpoint, opts)
+	// })
 
 	application := authApp.NewApplication(
 		tokenManager,
 		hasher,
 		repo,
-		authConfig,
+		usersConfig,
 	)
 	authS := authServer.NewServer(application)
 
-	authOpts := []grpc.ServerOption{
-		grpc.UnaryInterceptor(logging.UnaryServerInterceptor(logs.InterceptorLogger(logger))),
-	}
+	// authOpts := []grpc.ServerOption{
+	// grpc.UnaryInterceptor(logging.UnaryServerInterceptor(logs.InterceptorLogger(logger))),
+	// }
 
-	go commonServer.RunGRPCServer(authConfig.GrpcEndpoint, authOpts, func(srv *grpc.Server) {
+	go commonServer.RunGRPCServer(usersConfig.GrpcEndpoint, secretsOpts, func(srv *grpc.Server) {
 		auth.RegisterAuthServiceServer(srv, authS)
+		user.RegisterUsersServiceServer(srv, s)
+		secret.RegisterSecretKeeperServer(srv, sS)
 		reflection.Register(srv)
 	})
 
-	go commonServer.RunGatewayServer(authConfig.Cors, authConfig.HttpPort, func(mux *runtime.ServeMux, opts []grpc.DialOption) {
-		auth.RegisterAuthServiceHandlerFromEndpoint(ctx, mux, authConfig.GrpcEndpoint, opts)
+	go commonServer.RunGatewayServer(usersConfig.Cors, usersConfig.HttpPort, func(mux *runtime.ServeMux, opts []grpc.DialOption) {
+		auth.RegisterAuthServiceHandlerFromEndpoint(ctx, mux, usersConfig.GrpcEndpoint, opts)
+		user.RegisterUsersServiceHandlerFromEndpoint(ctx, mux, usersConfig.GrpcEndpoint, opts)
+		secret.RegisterSecretKeeperHandlerFromEndpoint(ctx, mux, usersConfig.GrpcEndpoint, opts)
 	})
 
 	exit := make(chan os.Signal, 1)
