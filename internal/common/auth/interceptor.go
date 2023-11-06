@@ -2,7 +2,6 @@ package auth
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/KirylJazzSax/secret-keeper/internal/common/errors"
 	"github.com/KirylJazzSax/secret-keeper/internal/common/token"
@@ -12,10 +11,17 @@ import (
 	"google.golang.org/grpc"
 )
 
+const (
+	loginMethod      = "/secret.AuthService/LoginUser"
+	createUserMethod = "/user.UsersService/CreateUser"
+)
+
 func AuthFunc(ctx context.Context) (context.Context, error) {
-	// test method
 	method, _ := grpc.Method(ctx)
-	fmt.Println(method)
+	if method == loginMethod || method == createUserMethod {
+		return ctx, nil
+	}
+
 	t, err := do.Invoke[token.Maker](nil)
 	if err != nil {
 		return nil, err
