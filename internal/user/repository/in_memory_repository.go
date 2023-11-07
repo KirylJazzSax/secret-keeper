@@ -2,7 +2,6 @@ package repository
 
 import (
 	"context"
-	"secret-keeper/internal/common/errors"
 
 	"github.com/KirylJazzSax/secret-keeper/internal/common/errors"
 	"github.com/KirylJazzSax/secret-keeper/internal/user/domain"
