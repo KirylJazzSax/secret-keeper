@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"secret-keeper/internal/common/errors"
 
 	"github.com/KirylJazzSax/secret-keeper/internal/common/errors"
 	"github.com/KirylJazzSax/secret-keeper/internal/user/domain"
@@ -21,7 +22,13 @@ func (r *InMemoryUserRepository) CreateUser(ctx context.Context, u *domain.User)
 }
 
 func (r *InMemoryUserRepository) GetUser(ctx context.Context, email string) (*domain.User, error) {
-	return r.users[email], nil
+	u, ok := r.users[email]
+
+	if !ok {
+		return nil, errors.ErrNotExists
+	}
+
+	return u, nil
 }
 
 func NewInMemoryUserRepository() *InMemoryUserRepository {
