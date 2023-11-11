@@ -42,8 +42,8 @@ func (h *ShowHandler) Handle(ctx context.Context, p *ShowPayload) error {
 		return err
 	}
 
-	s.Body = decrypted
 	p.Decoded = s
+	p.Decoded.Body = decrypted
 
 	return nil
 }
