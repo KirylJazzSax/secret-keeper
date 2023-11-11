@@ -42,8 +42,11 @@ func (h *ShowHandler) Handle(ctx context.Context, p *ShowPayload) error {
 		return err
 	}
 
-	p.Decoded = &s
-	p.Decoded.Body = decrypted
+	p.Decoded = &domain.Secret{
+		Id:    s.Id,
+		Title: s.Title,
+		Body:  decrypted,
+	}
 
 	return nil
 }
