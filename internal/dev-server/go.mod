@@ -3,10 +3,10 @@ module github.com/KirylJazzSax/secret-keeper/internal/dev-server
 go 1.20
 
 require (
-	github.com/KirylJazzSax/secret-keeper/internal/auth v0.0.0-20231111195612-d7e03ec2cf21
-	github.com/KirylJazzSax/secret-keeper/internal/common v0.0.0-20231111195612-d7e03ec2cf21
-	github.com/KirylJazzSax/secret-keeper/internal/secret v0.0.0-20231111195612-d7e03ec2cf21
-	github.com/KirylJazzSax/secret-keeper/internal/user v0.0.0-20231111195612-d7e03ec2cf21
+	github.com/KirylJazzSax/secret-keeper/internal/auth v0.0.0-20231111202021-45d7fb280060
+	github.com/KirylJazzSax/secret-keeper/internal/common v0.0.0-20231111202021-45d7fb280060
+	github.com/KirylJazzSax/secret-keeper/internal/secret v0.0.0-20231111202021-45d7fb280060
+	github.com/KirylJazzSax/secret-keeper/internal/user v0.0.0-20231111202021-45d7fb280060
 	github.com/grpc-ecosystem/go-grpc-middleware v1.4.0
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.0.1
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.18.1
