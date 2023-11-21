@@ -40,8 +40,12 @@ github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
 github.com/KirylJazzSax/secret-keeper/internal/common v0.0.0-20231112201007-3418a16ab8c2 h1:Ie5qpsWm5TC/k+cB64/3JTH9yic1kHVjWbCMFvlUFGs=
 github.com/KirylJazzSax/secret-keeper/internal/common v0.0.0-20231112201007-3418a16ab8c2/go.mod h1:px7w7q5au+l9vYCxpfVhkAqG+I6yyUyqmEDyy216dyg=
+github.com/KirylJazzSax/secret-keeper/internal/common v0.0.0-20231121205130-af1ea2f6887c h1:BnmAMr7vafSdyBOkMwbZWf2vtzN9UcDgfBD2uDj+kxE=
+github.com/KirylJazzSax/secret-keeper/internal/common v0.0.0-20231121205130-af1ea2f6887c/go.mod h1:9/XZqeF+SINaB4ZSAjKlZVwvW+Tv4ruol+vHZipK7jc=
 github.com/KirylJazzSax/secret-keeper/internal/secret v0.0.0-20231112201007-3418a16ab8c2 h1:l711eIwzwjfGiuRko+CHcx3bHKY7KtoySAEfGoDpTD4=
 github.com/KirylJazzSax/secret-keeper/internal/secret v0.0.0-20231112201007-3418a16ab8c2/go.mod h1:Dv31P0eZkgwRgqhbFI3E5my7AcsZh8jbo9kMvvQjJfc=
+github.com/KirylJazzSax/secret-keeper/internal/secret v0.0.0-20231121205130-af1ea2f6887c h1:AfJO3mey5SEl0PqeTLKyL2DvCxbYQQw/iIA9gxtG3Ho=
+github.com/KirylJazzSax/secret-keeper/internal/secret v0.0.0-20231121205130-af1ea2f6887c/go.mod h1:Dv31P0eZkgwRgqhbFI3E5my7AcsZh8jbo9kMvvQjJfc=
 github.com/aead/chacha20 v0.0.0-20180709150244-8b13a72661da h1:KjTM2ks9d14ZYCvmHS9iAKVt9AyzRSqNU1qabPih5BY=
 github.com/aead/chacha20 v0.0.0-20180709150244-8b13a72661da/go.mod h1:eHEWzANqSiWQsof+nXEI9bUVUyV6F53Fp89EuCh2EAA=
 github.com/aead/chacha20poly1305 v0.0.0-20170617001512-233f39982aeb/go.mod h1:UzH9IX1MMqOcwhoNOIjmTQeAxrFgzs50j4golQtXXxU=
@@ -138,6 +142,7 @@ github.com/google/uuid v1.1.2/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+
 github.com/googleapis/gax-go/v2 v2.0.4/go.mod h1:0Wqv26UfaUD9n4G6kQubkQ+KchISgw+vpHVxEJEs9eg=
 github.com/googleapis/gax-go/v2 v2.0.5/go.mod h1:DWXyrwAJ9X0FpwwEdw+IPEYBICEFu5mhpdKc/us6bOk=
 github.com/googleapis/google-cloud-go-testing v0.0.0-20200911160855-bcd43fbb19e8/go.mod h1:dvDLG8qkwmyD9a/MJJN3XJcT3xFxOKAvTZGvuZmac9g=
+github.com/grpc-ecosystem/go-grpc-middleware v1.4.0 h1:UH//fgunKIs4JdUbpDl1VZCDaL56wXCB/5+wF6uHfaI=
 github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.0.1 h1:HcUWd006luQPljE73d5sk+/VgYPGUReEVz2y1/qylwY=
 github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.0.1/go.mod h1:w9Y7gY31krpLmrVU5ZPG9H7l9fZuRu5/3R3S3FMtVQ4=
 github.com/grpc-ecosystem/grpc-gateway/v2 v2.18.1 h1:6UKoz5ujsI55KNpsJH3UwCq3T8kKbZwNZBNPuTTje8U=
