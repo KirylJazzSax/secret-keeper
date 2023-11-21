@@ -15,7 +15,7 @@ type User struct {
 
 func NewUser(email string, createdAt time.Time, password string) *User {
 	return &User{
-		Id:        primitive.NewObjectId(),
+		Id:        primitive.NewObjectID(),
 		Email:     email,
 		CreatedAt: createdAt,
 		Password:  password,
